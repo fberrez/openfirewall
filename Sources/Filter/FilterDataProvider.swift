@@ -31,7 +31,15 @@ final class FilterDataProvider: NEFilterDataProvider {
             guard let self, let data = self.filterConfiguration.vendorConfiguration?[ProductConfiguration.policyKey] as? Data else { return }
             self.stateQueue.async { try? self.installPolicy(data) }
         }
-        let settings = NEFilterSettings(rules: [], defaultAction: .filterData)
+        // NEFilterSettings' defaultAction only covers non-loopback traffic.
+        // Explicit rules are required so a local HTTP/SOCKS proxy cannot bypass
+        // the originating app's policy. The proxy keeps its own separate identity.
+        let localRules = [("127.0.0.0", 8), ("::1", 128)].map { address, prefix in
+            NEFilterRule(networkRule: NENetworkRule(
+                remoteNetwork: NWHostEndpoint(hostname: address, port: "0"), remotePrefix: prefix,
+                localNetwork: nil, localPrefix: 0, protocol: .any, direction: .any), action: .filterData)
+        }
+        let settings = NEFilterSettings(rules: localRules, defaultAction: .filterData)
         apply(settings) { [weak self] error in
             guard let self else { completionHandler(error); return }
             if error == nil {

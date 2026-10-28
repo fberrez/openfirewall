@@ -129,6 +129,8 @@ Closing or quitting the interface leaves an enabled filter running. To stop filt
 
 OpenFirewall records connection metadata. It does not inspect payloads, decrypt TLS, rewrite DNS, or inspect ECH. Hostnames appear when macOS supplies them; other destinations may appear as IP addresses.
 
+**Local proxy fix in the current source:** extension build 6 also applies app rules to local connections, including connections to local HTTP and SOCKS proxies. The alpha.1 download does not contain this fix. Earlier builds can allow a blocked app to reach the internet through a local proxy. Reconnect apps after updating the extension so existing untracked local connections are replaced.
+
 - History stays in extension memory and resets when the extension stops. Only the latest 500 records are retained.
 - Byte counts use macOS reports, requested about every five seconds. Short or blocked flows may show zero bytes.
 - Rules persist in macOS filter preferences and in `~/Library/Application Support/OpenFirewall/rules.json`.

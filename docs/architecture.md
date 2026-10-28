@@ -8,6 +8,10 @@ The system extension runs an `NEFilterDataProvider`. It requests socket flows fr
 
 The policy has one explicit action per exact app identity. An explicit rule wins; otherwise the configured default applies. The initial default is Allow. A new matching flow receives an Allow or Drop verdict.
 
+The provider explicitly requests IPv4 loopback (`127.0.0.0/8`) and IPv6 loopback (`::1/128`) flows as well as other socket traffic. `NEFilterSettings.defaultAction` does not cover loopback: macOS otherwise allows it without consulting the provider. This matters for local HTTP or SOCKS proxies. An app's connection to a proxy must receive that app's decision before the proxy opens its own upstream connection. The proxy retains its separate identity and policy.
+
+This coverage requires build 6 or later of the active extension. Earlier builds omitted loopback rules. Connections established before a flow enters the provider cannot be revoked through a retained reference; an app may need to reconnect after the filter is first enabled or its coverage changes.
+
 An Allow-to-Block change also updates retained, allowed flows to Drop. An already dropped connection must reconnect after an Allow change. The extension keeps at most 16,384 allowed flow references. Once that limit is reached, new flows still receive decisions, but some existing flows cannot be revoked by a later update. The interface reports the limit.
 
 Coverage is limited to socket flows macOS delivers to the provider. This is not a packet-layer policy. Attribution and coverage for helpers, system services, VPNs, IPv6, and incoming traffic require scenario-specific testing.
@@ -51,7 +55,7 @@ The provider does not request payload peeks, decrypt TLS, rewrite DNS, or parse 
 | `Sources/App` | SwiftUI interface, installed-app chooser, setup, persistence, XPC client |
 | `Tests/CoreTests` | Policy and history tests |
 | `Tests/Identity` | Real Security.framework identity smoke test |
-| `Tests/Live` | Separate TCP/UDP test application |
+| `Tests/Live` | Separate TCP/UDP app and loopback echo regression fixtures |
 | `project.yml` | XcodeGen project definition and capabilities |
 
 Apple references: [Content filter providers](https://developer.apple.com/documentation/networkextension/content-filter-providers), [source app audit token](https://developer.apple.com/documentation/networkextension/nefilterflow/sourceappaudittoken), [System Extensions](https://developer.apple.com/documentation/systemextensions).
