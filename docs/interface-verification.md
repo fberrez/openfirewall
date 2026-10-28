@@ -8,10 +8,10 @@ Verified on 2026-10-28, macOS 26.2, Apple Silicon. This is a presentation update
 - All 10 existing core tests passed.
 - Connections, Applications, Rules, Setup, and the app picker were inspected in the running native app.
 - Decision filters returned 6 blocked sample connections and 12 allowed sample connections.
-- Searching for `wikipedia` returned 4 sample connections.
+- Searching for `wikipedia` returned 4 sample connections. A query without results showed an accurate empty state; Reset filters restored all 18 sample connections.
 - Changing Notes to Block updated sample totals to 6 allowed and 12 blocked. Removing the new rule restored the default behavior.
 - Adding TextEdit through the searchable installed-app picker created a preview rule. Preview changes did not modify the saved user policy.
-- Command-1 through Command-4 switched pages. Command-N opened the app picker. Tab moved from search to the native table without trapping focus.
+- Command-1 through Command-4 switched pages. Command-N opened the app picker. Command-E opened the native export dialog, which was cancelled. Tab moved from search to the native table without trapping focus.
 - Terminal and Daylight appearances were visually inspected. The Terminal appearance was restored.
 - The window was resized to about 1000 points wide. Search, filters, primary actions, and the connection table remained usable.
 - The screenshot in the README uses sample data only.

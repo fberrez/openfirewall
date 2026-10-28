@@ -265,7 +265,19 @@ struct FirewallWindow: View {
             }.width(28)
         }.alternatingRowBackgrounds(.disabled).tableStyle(.inset).font(.system(size: 10, design: .monospaced))
             .scrollContentBackground(.hidden).background(FirewallTheme.surface)
-            .overlay { if filtered.isEmpty { ContentUnavailableView.search(text: search).allowsHitTesting(false) } }
+            .overlay {
+                if filtered.isEmpty {
+                    VStack(spacing: 12) {
+                        Text(model.connections.isEmpty ? "WAITING FOR CONNECTIONS" : "NO MATCHING CONNECTIONS")
+                            .font(.system(size: 14, weight: .semibold, design: .monospaced))
+                        Text(model.connections.isEmpty ? "New connections will appear here." : "Try a different search or decision filter.")
+                            .font(.system(size: 12, design: .monospaced)).foregroundStyle(FirewallTheme.secondary)
+                        if !search.isEmpty || decisionFilter != "All" {
+                            Button("RESET FILTERS") { search = ""; decisionFilter = "All" }.padding(.top, 4)
+                        }
+                    }.frame(maxWidth: .infinity, maxHeight: .infinity)
+                }
+            }
     }
 
     private var ruleContent: some View {
