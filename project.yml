@@ -1,0 +1,117 @@
+name: OpenFirewall
+options:
+  bundleIdPrefix: org.openfirewall
+  deploymentTarget:
+    macOS: "14.0"
+settings:
+  base:
+    SWIFT_VERSION: "5.0"
+    MACOSX_DEPLOYMENT_TARGET: "14.0"
+    CODE_SIGN_STYLE: Automatic
+    DEVELOPMENT_TEAM: ""
+    FIREWALL_APP_ID: org.openfirewall.app
+    FIREWALL_FILTER_ID: org.openfirewall.filter
+    FIREWALL_GROUP_ID: "$(TeamIdentifierPrefix)$(FIREWALL_FILTER_ID)"
+    FIREWALL_NETWORK_ENTITLEMENT: content-filter-provider
+    ENABLE_HARDENED_RUNTIME: YES
+    ENABLE_USER_SCRIPT_SANDBOXING: NO
+    MARKETING_VERSION: "0.1.0"
+    CURRENT_PROJECT_VERSION: "2"
+targets:
+  OpenFirewall:
+    type: application
+    platform: macOS
+    sources:
+      - Sources/App
+      - Sources/Core
+      - Sources/Shared
+    info:
+      path: Configuration/App-Info.plist
+      properties:
+        CFBundleDisplayName: OpenFirewall
+        CFBundlePackageType: APPL
+        CFBundleShortVersionString: "$(MARKETING_VERSION)"
+        CFBundleVersion: "$(CURRENT_PROJECT_VERSION)"
+        LSMinimumSystemVersion: "14.0"
+        NSHumanReadableCopyright: "Copyright © 2026 OpenFirewall contributors. MIT licensed."
+        FirewallAppIdentifier: "$(FIREWALL_APP_ID)"
+        FirewallFilterIdentifier: "$(FIREWALL_FILTER_ID)"
+        SigningTeamIdentifier: "$(DEVELOPMENT_TEAM)"
+        FirewallMachService: "$(FIREWALL_GROUP_ID).control"
+        NSSystemExtensionUsageDescription: "OpenFirewall needs a network extension to monitor connections and apply your app rules."
+    entitlements:
+      path: Configuration/App.entitlements
+      properties:
+        com.apple.developer.system-extension.install: true
+        com.apple.developer.networking.networkextension:
+          - "$(FIREWALL_NETWORK_ENTITLEMENT)"
+        com.apple.security.application-groups:
+          - "$(FIREWALL_GROUP_ID)"
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: "$(FIREWALL_APP_ID)"
+        PRODUCT_NAME: OpenFirewall
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        COMBINE_HIDPI_IMAGES: YES
+    dependencies:
+      - target: OpenFirewallFilter
+        embed: false
+      - sdk: NetworkExtension.framework
+      - sdk: SystemExtensions.framework
+      - sdk: Security.framework
+    postBuildScripts:
+      - name: Embed network system extension
+        basedOnDependencyAnalysis: false
+        script: |
+          set -eu
+          destination="${TARGET_BUILD_DIR}/${CONTENTS_FOLDER_PATH}/Library/SystemExtensions"
+          mkdir -p "$destination"
+          ditto "${BUILT_PRODUCTS_DIR}/${FIREWALL_FILTER_ID}.systemextension" "$destination/${FIREWALL_FILTER_ID}.systemextension"
+  OpenFirewallFilter:
+    type: system-extension
+    platform: macOS
+    sources:
+      - Sources/Filter
+      - Sources/Core
+      - Sources/Shared
+    info:
+      path: Configuration/Filter-Info.plist
+      properties:
+        CFBundleDisplayName: OpenFirewall Network Filter
+        CFBundlePackageType: SYSX
+        CFBundleShortVersionString: "$(MARKETING_VERSION)"
+        CFBundleVersion: "$(CURRENT_PROJECT_VERSION)"
+        NSSystemExtensionUsageDescription: "Apply per-app network rules and show connection metadata."
+        FirewallAppIdentifier: "$(FIREWALL_APP_ID)"
+        FirewallFilterIdentifier: "$(FIREWALL_FILTER_ID)"
+        SigningTeamIdentifier: "$(DEVELOPMENT_TEAM)"
+        FirewallMachService: "$(FIREWALL_GROUP_ID).control"
+        NetworkExtension:
+          NEMachServiceName: "$(FIREWALL_GROUP_ID).control"
+          NEProviderClasses:
+            com.apple.networkextension.filter-data: FilterDataProvider
+    entitlements:
+      path: Configuration/Filter.entitlements
+      properties:
+        com.apple.developer.networking.networkextension:
+          - "$(FIREWALL_NETWORK_ENTITLEMENT)"
+        com.apple.security.application-groups:
+          - "$(FIREWALL_GROUP_ID)"
+        com.apple.security.app-sandbox: false
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: "$(FIREWALL_FILTER_ID)"
+        PRODUCT_NAME: "$(FIREWALL_FILTER_ID)"
+        SKIP_INSTALL: YES
+    dependencies:
+      - sdk: NetworkExtension.framework
+      - sdk: Security.framework
+schemes:
+  OpenFirewall:
+    build:
+      targets:
+        OpenFirewall: all
+    run:
+      config: Debug
+    archive:
+      config: Release

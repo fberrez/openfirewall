@@ -1,0 +1,28 @@
+name: Build
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: build-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  macos:
+    runs-on: macos-15
+    timeout-minutes: 20
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Test policy and history
+        run: swift test
+      - name: Verify app identity handling
+        run: bash Scripts/test-identity.sh
+      - name: Install XcodeGen
+        run: brew install xcodegen
+      - name: Build and validate unsigned app
+        run: bash Scripts/build.sh

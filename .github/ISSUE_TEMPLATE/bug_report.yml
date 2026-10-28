@@ -1,0 +1,55 @@
+name: Bug report
+description: Report a build, interface, monitoring, or rule-enforcement problem.
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        For a security bypass or data exposure, use private reporting: https://github.com/fberrez/openfirewall/security/advisories/new
+        Do not upload signing files, credentials, or unredacted network history.
+  - type: textarea
+    id: problem
+    attributes:
+      label: What happened?
+      description: Describe the problem and what you expected instead.
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1. Open…
+        2. Choose…
+        3. Observe…
+    validations:
+      required: true
+  - type: input
+    id: environment
+    attributes:
+      label: macOS and hardware
+      placeholder: macOS version, Apple Silicon or Intel
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: OpenFirewall version or commit
+    validations:
+      required: true
+  - type: dropdown
+    id: build
+    attributes:
+      label: Build type
+      options:
+        - Signed build with live filtering
+        - Unsigned preview
+        - Build failed
+        - Unsure
+    validations:
+      required: true
+  - type: textarea
+    id: diagnostics
+    attributes:
+      label: Additional context
+      description: Relevant redacted errors, screenshots, VPNs, or other installed filters. Explain how actual enforcement was tested, if relevant.

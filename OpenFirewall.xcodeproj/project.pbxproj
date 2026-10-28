@@ -1,0 +1,550 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		062B5D337E317C520B79F757 /* ControlProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A13D0482737454F667A89A6 /* ControlProtocol.swift */; };
+		114D7D7F01D07AA2AFB8BEDA /* FilterClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9D9F7B51FC0DE5241D420FC /* FilterClient.swift */; };
+		18649C0FC97B9D5A07B112E2 /* ControlProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A13D0482737454F667A89A6 /* ControlProtocol.swift */; };
+		2B8D4A6E287E343DF73C2978 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 643A96DFF0D5F9AE20F3E1C4 /* Security.framework */; };
+		5B16C6247A897321CCFD1312 /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = 395BBE109B153FDF6664D6E6 /* Models.swift */; };
+		7388726062929A4D1DF5CCB5 /* InstalledApplicationPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8780472AD022A222004D371A /* InstalledApplicationPicker.swift */; };
+		839496B9615EA0B02A9A8A02 /* NetworkExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EE22F30761945AAD5DF2268F /* NetworkExtension.framework */; };
+		83CF8BEE790C8E0A905F24CA /* SystemSetup.swift in Sources */ = {isa = PBXBuildFile; fileRef = DADEF22D3B5B5D9B34DA968D /* SystemSetup.swift */; };
+		88F8FBAFB3AF2F38FF895136 /* IdentityResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = C943F55B94C81A04B5A0BA1A /* IdentityResolver.swift */; };
+		90576159F25EFD54BCE97848 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 643A96DFF0D5F9AE20F3E1C4 /* Security.framework */; };
+		92DE2F67AFCEE2747E808017 /* OpenFirewallApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18B3E4B9FD2B696856716FEE /* OpenFirewallApp.swift */; };
+		9B19983B8BF613EA64149AB3 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9210A7C8547BFF8E10E711D1 /* main.swift */; };
+		BB394C7B82E169D568833492 /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = 395BBE109B153FDF6664D6E6 /* Models.swift */; };
+		C2A6D46C594495FE989BB987 /* NetworkExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EE22F30761945AAD5DF2268F /* NetworkExtension.framework */; };
+		D188E86E1EE71CA6FBFF24D9 /* SystemExtensions.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C6AFC7D0B5C5C5541DD3EE1A /* SystemExtensions.framework */; };
+		DA7316C32225F02B8C725321 /* FirewallModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A39CD35F8EAEB90DADCD455D /* FirewallModel.swift */; };
+		EC141BF2FAF9034CAE37AE9D /* IdentityResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = C943F55B94C81A04B5A0BA1A /* IdentityResolver.swift */; };
+		F1A08920FF827FB2E183F5EA /* FilterDataProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA7D67B03A43D3B62887225C /* FilterDataProvider.swift */; };
+		F4A1065F377AC7E388AF9D9D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 61B9F26FD3E325A10E5E3625 /* Assets.xcassets */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		0F0049D586D49CCEA3EC7E9D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B002D9CB406A3A0FEA03D408 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 60916C35077194FD870F5967;
+			remoteInfo = OpenFirewallFilter;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		0ED7083C6627F965C4E79F54 /* OpenFirewallFilter.systemextension */ = {isa = PBXFileReference; explicitFileType = "wrapper.system-extension"; includeInIndex = 0; path = OpenFirewallFilter.systemextension; sourceTree = BUILT_PRODUCTS_DIR; };
+		18B3E4B9FD2B696856716FEE /* OpenFirewallApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenFirewallApp.swift; sourceTree = "<group>"; };
+		3955E4E08F7F380908AB9AC2 /* OpenFirewall.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OpenFirewall.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		395BBE109B153FDF6664D6E6 /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
+		61B9F26FD3E325A10E5E3625 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		643A96DFF0D5F9AE20F3E1C4 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		8780472AD022A222004D371A /* InstalledApplicationPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstalledApplicationPicker.swift; sourceTree = "<group>"; };
+		9210A7C8547BFF8E10E711D1 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
+		9A13D0482737454F667A89A6 /* ControlProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControlProtocol.swift; sourceTree = "<group>"; };
+		A39CD35F8EAEB90DADCD455D /* FirewallModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirewallModel.swift; sourceTree = "<group>"; };
+		B9D9F7B51FC0DE5241D420FC /* FilterClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterClient.swift; sourceTree = "<group>"; };
+		C6AFC7D0B5C5C5541DD3EE1A /* SystemExtensions.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemExtensions.framework; path = System/Library/Frameworks/SystemExtensions.framework; sourceTree = SDKROOT; };
+		C943F55B94C81A04B5A0BA1A /* IdentityResolver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IdentityResolver.swift; sourceTree = "<group>"; };
+		DA7D67B03A43D3B62887225C /* FilterDataProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterDataProvider.swift; sourceTree = "<group>"; };
+		DADEF22D3B5B5D9B34DA968D /* SystemSetup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SystemSetup.swift; sourceTree = "<group>"; };
+		EE22F30761945AAD5DF2268F /* NetworkExtension.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NetworkExtension.framework; path = System/Library/Frameworks/NetworkExtension.framework; sourceTree = SDKROOT; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		72359CEE347E9561ACEFDB41 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C2A6D46C594495FE989BB987 /* NetworkExtension.framework in Frameworks */,
+				90576159F25EFD54BCE97848 /* Security.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		7D2FF36831BCDA64493C3495 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				839496B9615EA0B02A9A8A02 /* NetworkExtension.framework in Frameworks */,
+				D188E86E1EE71CA6FBFF24D9 /* SystemExtensions.framework in Frameworks */,
+				2B8D4A6E287E343DF73C2978 /* Security.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		0A17FEC5C45141362970B8AD /* Core */ = {
+			isa = PBXGroup;
+			children = (
+				395BBE109B153FDF6664D6E6 /* Models.swift */,
+			);
+			name = Core;
+			path = Sources/Core;
+			sourceTree = "<group>";
+		};
+		21600CF3BDD991BDC6728E77 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				3955E4E08F7F380908AB9AC2 /* OpenFirewall.app */,
+				0ED7083C6627F965C4E79F54 /* OpenFirewallFilter.systemextension */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		2B1513F9FCA8AB54A2FC22B2 /* Filter */ = {
+			isa = PBXGroup;
+			children = (
+				DA7D67B03A43D3B62887225C /* FilterDataProvider.swift */,
+				9210A7C8547BFF8E10E711D1 /* main.swift */,
+			);
+			name = Filter;
+			path = Sources/Filter;
+			sourceTree = "<group>";
+		};
+		412B40C51FA069F13B563334 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				EE22F30761945AAD5DF2268F /* NetworkExtension.framework */,
+				643A96DFF0D5F9AE20F3E1C4 /* Security.framework */,
+				C6AFC7D0B5C5C5541DD3EE1A /* SystemExtensions.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		9AA797BBF47B1A1D58215F17 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				61B9F26FD3E325A10E5E3625 /* Assets.xcassets */,
+				B9D9F7B51FC0DE5241D420FC /* FilterClient.swift */,
+				A39CD35F8EAEB90DADCD455D /* FirewallModel.swift */,
+				8780472AD022A222004D371A /* InstalledApplicationPicker.swift */,
+				18B3E4B9FD2B696856716FEE /* OpenFirewallApp.swift */,
+				DADEF22D3B5B5D9B34DA968D /* SystemSetup.swift */,
+			);
+			name = App;
+			path = Sources/App;
+			sourceTree = "<group>";
+		};
+		CC830C5A7D119BE9551F00F6 = {
+			isa = PBXGroup;
+			children = (
+				9AA797BBF47B1A1D58215F17 /* App */,
+				0A17FEC5C45141362970B8AD /* Core */,
+				2B1513F9FCA8AB54A2FC22B2 /* Filter */,
+				D0E1BA8CA78F561F2A3BB174 /* Shared */,
+				412B40C51FA069F13B563334 /* Frameworks */,
+				21600CF3BDD991BDC6728E77 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		D0E1BA8CA78F561F2A3BB174 /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				9A13D0482737454F667A89A6 /* ControlProtocol.swift */,
+				C943F55B94C81A04B5A0BA1A /* IdentityResolver.swift */,
+			);
+			name = Shared;
+			path = Sources/Shared;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		60916C35077194FD870F5967 /* OpenFirewallFilter */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 2910E1337A0A24DB5328F716 /* Build configuration list for PBXNativeTarget "OpenFirewallFilter" */;
+			buildPhases = (
+				2C08D5C165AF9B8A79C338C9 /* Sources */,
+				72359CEE347E9561ACEFDB41 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = OpenFirewallFilter;
+			packageProductDependencies = (
+			);
+			productName = OpenFirewallFilter;
+			productReference = 0ED7083C6627F965C4E79F54 /* OpenFirewallFilter.systemextension */;
+			productType = "com.apple.product-type.system-extension";
+		};
+		D4D4D7009988C1D4C09902B1 /* OpenFirewall */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = AEA56776ADCC3545D5467730 /* Build configuration list for PBXNativeTarget "OpenFirewall" */;
+			buildPhases = (
+				B389CE025BEEED5DBEBD43F1 /* Sources */,
+				9456602F654E3D0A8CEBCEAF /* Resources */,
+				7D2FF36831BCDA64493C3495 /* Frameworks */,
+				5CBE5351A3EAA64A2A174621 /* Embed network system extension */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				F93DFCBF96DFB95E62B8C026 /* PBXTargetDependency */,
+			);
+			name = OpenFirewall;
+			packageProductDependencies = (
+			);
+			productName = OpenFirewall;
+			productReference = 3955E4E08F7F380908AB9AC2 /* OpenFirewall.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		B002D9CB406A3A0FEA03D408 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1430;
+				TargetAttributes = {
+					60916C35077194FD870F5967 = {
+						DevelopmentTeam = "";
+						ProvisioningStyle = Automatic;
+					};
+					D4D4D7009988C1D4C09902B1 = {
+						DevelopmentTeam = "";
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = 99D86BA54CD5FAEDCA489A8E /* Build configuration list for PBXProject "OpenFirewall" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = CC830C5A7D119BE9551F00F6;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 21600CF3BDD991BDC6728E77 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				D4D4D7009988C1D4C09902B1 /* OpenFirewall */,
+				60916C35077194FD870F5967 /* OpenFirewallFilter */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		9456602F654E3D0A8CEBCEAF /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F4A1065F377AC7E388AF9D9D /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		5CBE5351A3EAA64A2A174621 /* Embed network system extension */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Embed network system extension";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "set -eu\ndestination=\"${TARGET_BUILD_DIR}/${CONTENTS_FOLDER_PATH}/Library/SystemExtensions\"\nmkdir -p \"$destination\"\nditto \"${BUILT_PRODUCTS_DIR}/${FIREWALL_FILTER_ID}.systemextension\" \"$destination/${FIREWALL_FILTER_ID}.systemextension\"\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		2C08D5C165AF9B8A79C338C9 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				062B5D337E317C520B79F757 /* ControlProtocol.swift in Sources */,
+				F1A08920FF827FB2E183F5EA /* FilterDataProvider.swift in Sources */,
+				EC141BF2FAF9034CAE37AE9D /* IdentityResolver.swift in Sources */,
+				BB394C7B82E169D568833492 /* Models.swift in Sources */,
+				9B19983B8BF613EA64149AB3 /* main.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B389CE025BEEED5DBEBD43F1 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				18649C0FC97B9D5A07B112E2 /* ControlProtocol.swift in Sources */,
+				114D7D7F01D07AA2AFB8BEDA /* FilterClient.swift in Sources */,
+				DA7316C32225F02B8C725321 /* FirewallModel.swift in Sources */,
+				88F8FBAFB3AF2F38FF895136 /* IdentityResolver.swift in Sources */,
+				7388726062929A4D1DF5CCB5 /* InstalledApplicationPicker.swift in Sources */,
+				5B16C6247A897321CCFD1312 /* Models.swift in Sources */,
+				92DE2F67AFCEE2747E808017 /* OpenFirewallApp.swift in Sources */,
+				83CF8BEE790C8E0A905F24CA /* SystemSetup.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		F93DFCBF96DFB95E62B8C026 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 60916C35077194FD870F5967 /* OpenFirewallFilter */;
+			targetProxy = 0F0049D586D49CCEA3EC7E9D /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		2696191DD73D57939D550428 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = Configuration/App.entitlements;
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = "Configuration/App-Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "$(FIREWALL_APP_ID)";
+				PRODUCT_NAME = OpenFirewall;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		67C9D728625704DD6D407729 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = Configuration/App.entitlements;
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = "Configuration/App-Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "$(FIREWALL_APP_ID)";
+				PRODUCT_NAME = OpenFirewall;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		88B39D13D117C91602F0CBCF /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = Configuration/Filter.entitlements;
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = "Configuration/Filter-Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "$(FIREWALL_FILTER_ID)";
+				PRODUCT_NAME = "$(FIREWALL_FILTER_ID)";
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		E66D749E1E600D01259AA6A9 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = Configuration/Filter.entitlements;
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = "Configuration/Filter-Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "$(FIREWALL_FILTER_ID)";
+				PRODUCT_NAME = "$(FIREWALL_FILTER_ID)";
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+		E88AB25D1B4200AAE9DDE165 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 2;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				FIREWALL_APP_ID = org.openfirewall.app;
+				FIREWALL_FILTER_ID = org.openfirewall.filter;
+				FIREWALL_GROUP_ID = "$(TeamIdentifierPrefix)$(FIREWALL_FILTER_ID)";
+				FIREWALL_NETWORK_ENTITLEMENT = "content-filter-provider";
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MARKETING_VERSION = 0.1.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		F39B79ACF70DE2F29EDB767E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 2;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = "";
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				FIREWALL_APP_ID = org.openfirewall.app;
+				FIREWALL_FILTER_ID = org.openfirewall.filter;
+				FIREWALL_GROUP_ID = "$(TeamIdentifierPrefix)$(FIREWALL_FILTER_ID)";
+				FIREWALL_NETWORK_ENTITLEMENT = "content-filter-provider";
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MARKETING_VERSION = 0.1.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		2910E1337A0A24DB5328F716 /* Build configuration list for PBXNativeTarget "OpenFirewallFilter" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				88B39D13D117C91602F0CBCF /* Debug */,
+				E66D749E1E600D01259AA6A9 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		99D86BA54CD5FAEDCA489A8E /* Build configuration list for PBXProject "OpenFirewall" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E88AB25D1B4200AAE9DDE165 /* Debug */,
+				F39B79ACF70DE2F29EDB767E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		AEA56776ADCC3545D5467730 /* Build configuration list for PBXNativeTarget "OpenFirewall" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2696191DD73D57939D550428 /* Debug */,
+				67C9D728625704DD6D407729 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = B002D9CB406A3A0FEA03D408 /* Project object */;
+}
