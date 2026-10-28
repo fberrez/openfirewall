@@ -15,7 +15,7 @@
 
 ![OpenFirewall connection monitor in preview mode](docs/images/connections-terminal-preview.jpg)
 
-*Alpha.2 interface with sample connections.*
+*Current-source interface with sample connections. Public alpha.1 has the earlier interface.*
 
 ## What it does
 
@@ -29,7 +29,7 @@ Native SwiftUI interface. No accounts, subscriptions, license keys, telemetry, o
 
 ## Install
 
-**[Download OpenFirewall for macOS](https://github.com/fberrez/openfirewall/releases/download/v0.1.0-alpha.2/OpenFirewall-0.1.0-alpha.2-universal.dmg)** · [Release notes and checksums](https://github.com/fberrez/openfirewall/releases/tag/v0.1.0-alpha.2)
+**[Download OpenFirewall for macOS](https://github.com/fberrez/openfirewall/releases/download/v0.1.0-alpha.1/OpenFirewall-0.1.0-alpha.1-universal.dmg)** · [Release notes and checksums](https://github.com/fberrez/openfirewall/releases/tag/v0.1.0-alpha.1)
 
 1. Open the downloaded disk image.
 2. Drag **OpenFirewall** to **Applications**.
@@ -39,11 +39,11 @@ Native SwiftUI interface. No accounts, subscriptions, license keys, telemetry, o
 
 The app is Developer ID-signed and notarized by Apple. The download includes Apple Silicon and Intel binaries. You do not need Xcode or an Apple Developer account to install it. macOS approval is required for network filtering.
 
-To upgrade, quit the interface, replace the app in Applications, reopen it, and choose **Setup → Update firewall**. Your saved rules are retained. macOS may request approval for the extension update. Reconnect or restart affected apps to replace local connections opened before the update.
+**Upgrade validation is pending.** A running-extension replacement failed during local testing and interrupted connections. Do not use **Update firewall** on a working Mac for now. Alpha.2 is withheld until upgrade tests pass in an isolated environment. See [upgrade investigation](docs/extension-upgrades.md).
 
 ## Project status
 
-**Early alpha, version 0.1.0-alpha.2 (build 7).** Actual TCP and UDP tests on one Apple Silicon Mac passed Allow → Block → Allow. Tests also confirmed that Block disconnects an existing TCP connection and continues working after quitting the interface. The local-proxy fix passed IPv4 and IPv6 TCP/UDP checks on extension build 6; build 7 retains the same filter logic and simplifies the interface.
+**Public alpha.1 (build 4). Alpha.2 candidate (build 8) is not released.** Actual TCP and UDP tests on one Apple Silicon Mac passed Allow → Block → Allow. Tests also confirmed that Block disconnects an existing TCP connection and continues working after quitting the interface. The local-proxy fix passed IPv4 and IPv6 TCP/UDP checks on extension build 6; build 8 retains that logic, simplifies the interface, and versions the app-to-filter communication channel. The upgrade workaround has not received live validation.
 
 The signed public alpha is available above. To build your own version, see [Building and installation](docs/building.md). Signing and provisioning are required for self-built versions that enable live filtering.
 
@@ -118,7 +118,7 @@ After [installing OpenFirewall](#install):
 
 Apps are **allowed by default**. An explicit app rule overrides the default. Change the default or remove a rule in **Rules**. Removing a rule restores the default for that app.
 
-**+ Add app** is available on **Connections**, **Applications**, and **Rules**.
+**+ Add app** is available on **Connections**, **Applications**, and **Rules** in the current source. In alpha.1, use **Applications** or **Rules**.
 
 The current interface defaults to a green terminal theme. Choose **Terminal**, **Daylight**, or **System** in **Setup → Appearance**. Use **⌘1–⌘4** to switch pages, **⌘N** to add an app, and **⌘E** to export connections.
 
@@ -128,7 +128,7 @@ Closing or quitting the interface leaves an enabled filter running. To stop filt
 
 OpenFirewall records connection metadata. It does not inspect payloads, decrypt TLS, rewrite DNS, or inspect ECH. Hostnames appear when macOS supplies them; other destinations may appear as IP addresses.
 
-**Alpha.2 fixes local-proxy bypasses:** app rules also cover IPv4 loopback (`127.0.0.0/8`) and IPv6 loopback (`::1`), including local HTTP and SOCKS proxies. Alpha.1 does not contain this fix. Reconnect apps after updating the extension so existing untracked local connections are replaced.
+**Local-proxy fix in the unreleased source:** app rules also cover IPv4 loopback (`127.0.0.0/8`) and IPv6 loopback (`::1`), including local HTTP and SOCKS proxies. Alpha.1 does not contain this fix. Reconnect apps after updating the extension so existing untracked local connections are replaced.
 
 - History stays in extension memory and resets when the extension stops. Only the latest 500 records are retained.
 - Byte counts use macOS reports, requested about every five seconds. Short or blocked flows may show zero bytes.

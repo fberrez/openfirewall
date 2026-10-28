@@ -1,6 +1,6 @@
 # Terminal interface verification
 
-Verified on 2026-10-28, macOS 26.2, Apple Silicon. Initial terminal interface checks used build 5. Alpha.2 uses build 7, with redundant copy removed. Alpha.1 was build 4.
+Verified on 2026-10-28, macOS 26.2, Apple Silicon. Initial terminal interface checks used build 5. Build 7 removed redundant copy. The unreleased build 8 retains that interface. Alpha.1 was build 4.
 
 ## Build 7 simplification
 
@@ -39,3 +39,9 @@ Computed from the theme's OKLCH values after sRGB conversion and gamut clipping.
 | Button text / selected Block | 8.32:1 |
 
 Allow and Block also have distinct text and symbols. No motion effects were introduced. Full VoiceOver qualification and verification on older macOS versions remain outstanding.
+
+## Upgrade qualification
+
+Build 7 passed artifact signing/notarization checks, but replacement of the running build 6 failed: the new Mach listener reported `Operation not permitted`, the UI lost contact, and all four loopback echo attempts timed out. Build 6 was restored, and all four echo checks passed again. No build 7 release was published.
+
+Build 8 versions the Mach service and handles XPC interruption. It must pass isolated upgrade testing before alpha.2 is published. The active user installation remains build 6. No further extension activation is authorized on this Mac. See [extension upgrades](extension-upgrades.md).

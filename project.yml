@@ -12,11 +12,12 @@ settings:
     FIREWALL_APP_ID: org.openfirewall.app
     FIREWALL_FILTER_ID: org.openfirewall.filter
     FIREWALL_GROUP_ID: "$(TeamIdentifierPrefix)$(FIREWALL_FILTER_ID)"
+    FIREWALL_MACH_SERVICE: "$(FIREWALL_GROUP_ID).control.$(CURRENT_PROJECT_VERSION)"
     FIREWALL_NETWORK_ENTITLEMENT: content-filter-provider
     ENABLE_HARDENED_RUNTIME: YES
     ENABLE_USER_SCRIPT_SANDBOXING: NO
     MARKETING_VERSION: "0.1.0"
-    CURRENT_PROJECT_VERSION: "7"
+    CURRENT_PROJECT_VERSION: "8"
 targets:
   OpenFirewall:
     type: application
@@ -38,7 +39,7 @@ targets:
         FirewallAppIdentifier: "$(FIREWALL_APP_ID)"
         FirewallFilterIdentifier: "$(FIREWALL_FILTER_ID)"
         SigningTeamIdentifier: "$(DEVELOPMENT_TEAM)"
-        FirewallMachService: "$(FIREWALL_GROUP_ID).control"
+        FirewallMachService: "$(FIREWALL_MACH_SERVICE)"
         NSSystemExtensionUsageDescription: "OpenFirewall needs a network extension to monitor connections and apply your app rules."
     entitlements:
       path: Configuration/App.entitlements
@@ -86,9 +87,9 @@ targets:
         FirewallAppIdentifier: "$(FIREWALL_APP_ID)"
         FirewallFilterIdentifier: "$(FIREWALL_FILTER_ID)"
         SigningTeamIdentifier: "$(DEVELOPMENT_TEAM)"
-        FirewallMachService: "$(FIREWALL_GROUP_ID).control"
+        FirewallMachService: "$(FIREWALL_MACH_SERVICE)"
         NetworkExtension:
-          NEMachServiceName: "$(FIREWALL_GROUP_ID).control"
+          NEMachServiceName: "$(FIREWALL_MACH_SERVICE)"
           NEProviderClasses:
             com.apple.networkextension.filter-data: FilterDataProvider
     entitlements:

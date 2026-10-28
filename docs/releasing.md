@@ -54,6 +54,8 @@ The helper mounts the completed image read-only and repeats validation on the ap
 
 ## Publish
 
+Alpha.2 is currently withheld. The [extension upgrade gate](extension-upgrades.md) must pass in an isolated environment before publication. Do not activate another extension on the developer's working Mac.
+
 Perform the appropriate signed-device checks in [VERIFY.md](../VERIFY.md). Record exactly which devices and network paths were tested. Use an alpha or prerelease label while broader validation is incomplete.
 
 Commit the matching source, tag that commit, and publish the DMG and `SHA256SUMS` together through GitHub Releases. Keep archives, profiles, signing credentials, private diagnostic logs, and connection histories out of release assets. GitHub generates the source archives from the tag.

@@ -24,6 +24,7 @@ assert (provider / 'Contents/MacOS' / extension['CFBundleExecutable']).is_file()
 assert extension['NetworkExtension']['NEProviderClasses']['com.apple.networkextension.filter-data'] == 'FilterDataProvider'
 service = extension['NetworkExtension']['NEMachServiceName']
 assert service == container['FirewallMachService'] == extension['FirewallMachService']
+assert service.endswith('.control.' + container['CFBundleVersion']), 'Mach service must be unique per build'
 assert container['SigningTeamIdentifier'] == extension['SigningTeamIdentifier']
 if container['SigningTeamIdentifier']:
     for bundle in (app, provider):
