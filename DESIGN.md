@@ -12,7 +12,7 @@ Tokens are authored in OKLCH and converted to sRGB in FirewallTheme.swift. A day
 
 ## Typography
 
-Native system monospaced type. 24-point uppercase page headings; 12-point connection data and body copy; 10–11-point supporting labels. Numbers align naturally. App names and destinations retain their actual case. Controls use concise uppercase labels, while explanations use ordinary sentences.
+Native system monospaced type. 24-point uppercase page headings; 12-point connection data and body copy; 10–11-point supporting labels. Numbers align naturally. App names and destinations retain their actual case. Controls use concise uppercase labels. No eyebrows, subtitles, taglines, or repeated explanations. Show operational state and short errors; put reference material in the README or tooltips.
 
 ## Layout
 

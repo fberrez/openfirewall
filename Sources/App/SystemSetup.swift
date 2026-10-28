@@ -4,7 +4,7 @@ import SystemExtensions
 
 @MainActor
 final class SystemSetup: NSObject, ObservableObject, OSSystemExtensionRequestDelegate {
-    @Published var message = "Move OpenFirewall to Applications, then enable the firewall."
+    @Published var message = "Install in /Applications, then enable."
     @Published var busy = false
     @Published var enabled = false
     private var activation: CheckedContinuation<Void, Error>?
@@ -27,16 +27,15 @@ final class SystemSetup: NSObject, ObservableObject, OSSystemExtensionRequestDel
             enabled = NEFilterManager.shared().isEnabled &&
                 NEFilterManager.shared().providerConfiguration?.filterDataProviderBundleIdentifier == ProductConfiguration.filterIdentifier
             if !busy {
-                message = enabled ? "Firewall is enabled. Your app rules are active." :
-                    "Enable the firewall, then approve OpenFirewall when macOS asks."
+                message = enabled ? "Enabled" : "Enable, then approve in macOS."
             }
         }
-        catch { message = "Setup is required before connection monitoring can start." }
+        catch { message = "Setup required." }
     }
     func enable(policy: FirewallPolicy) async throws {
         guard !busy else { return }
         guard ProductConfiguration.requirement(for: ProductConfiguration.appIdentifier) != nil else {
-            throw clientError("This is an unsigned preview build. Open the Xcode project, choose your signing team, and build a signed app first.")
+            throw clientError("Unsigned build. Install a signed release to enable filtering.")
         }
         guard Bundle.main.bundleURL.path.hasPrefix("/Applications/") else {
             throw clientError("Move the signed OpenFirewall app to Applications before enabling it.")
@@ -53,7 +52,7 @@ final class SystemSetup: NSObject, ObservableObject, OSSystemExtensionRequestDel
             }
         }
         try await persist(policy, enable: true)
-        enabled = true; message = "Firewall enabled. Waiting for the network filter…"
+        enabled = true; message = "Waiting for filter…"
     }
     private func currentExtensionIsEnabled() async throws -> Bool {
         try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Bool, Error>) in
@@ -80,7 +79,7 @@ final class SystemSetup: NSObject, ObservableObject, OSSystemExtensionRequestDel
         }
         manager.isEnabled = false
         try await savePreferences()
-        enabled = false; message = "Firewall disabled. Connections are no longer filtered."
+        enabled = false; message = "Disabled"
     }
     func persist(_ policy: FirewallPolicy, enable: Bool? = nil) async throws {
         let policy = try policy.validated()

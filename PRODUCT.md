@@ -14,7 +14,7 @@ OpenFirewall is a free, MIT-licensed macOS firewall. It provides per-app Allow a
 
 ## Brand Personality
 
-Technical, independent, direct. Use short, concrete labels. Explain security state accurately. The user explicitly chose app.nymchat.com as the reference and requested a stronger hacker and nerd aesthetic: a phosphor-green terminal, monospaced typography, and square frames.
+Technical, independent, direct. The audience is technical. Use short labels, operational state, and concise errors. No eyebrows, subtitles, taglines, or tutorial paragraphs inside the app. The user explicitly chose app.nymchat.com as the reference and requested a stronger hacker and nerd aesthetic: a phosphor-green terminal, monospaced typography, and square frames.
 
 ## Anti-references
 

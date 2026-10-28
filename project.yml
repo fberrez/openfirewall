@@ -16,7 +16,7 @@ settings:
     ENABLE_HARDENED_RUNTIME: YES
     ENABLE_USER_SCRIPT_SANDBOXING: NO
     MARKETING_VERSION: "0.1.0"
-    CURRENT_PROJECT_VERSION: "6"
+    CURRENT_PROJECT_VERSION: "7"
 targets:
   OpenFirewall:
     type: application

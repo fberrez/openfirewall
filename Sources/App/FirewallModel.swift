@@ -7,7 +7,7 @@ final class FirewallModel: ObservableObject {
     @Published var connections: [ConnectionRecord] = []
     @Published var connected = false
     @Published var preview = false
-    @Published var status = "Network filter is not connected"
+    @Published var status = "Filter disconnected"
     @Published var updateMessage: String?
     @Published var error: String?
     @Published var activeFlows = 0
@@ -46,11 +46,11 @@ final class FirewallModel: ObservableObject {
             guard !preview else { return }
             connected = true; connections = snapshot.connections; activeFlows = snapshot.activeFlowCount
             untracked = snapshot.untrackedFlowCount; evicted = snapshot.evictedHistoryCount
-            status = "Filtering connections"
+            status = "Filtering"
             if !saving && pendingPolicy == nil && snapshot.policy.revision > policy.revision { policy = snapshot.policy; saveLocal() }
         } catch {
             guard !preview else { return }
-            connected = false; status = "Network filter is not connected"
+            connected = false; status = "Filter disconnected"
         }
     }
     func setRule(_ action: FirewallAction, application: ApplicationIdentity) {
@@ -68,7 +68,7 @@ final class FirewallModel: ObservableObject {
                 connections[i].state = connections[i].action == .deny ? .blocked : .active
             }
             activeFlows = connections.filter { $0.action == .allow }.count
-            updateMessage = "Preview only · no network settings changed"; return
+            updateMessage = "Preview · changes not applied"; return
         }
         saveLocal(); pendingPolicy = policy; updateMessage = "Saving rules…"
         if !saving { Task { await publishPending() } }
@@ -85,8 +85,8 @@ final class FirewallModel: ObservableObject {
                     try await client.apply(next)
                     updateMessage = "Rules applied"
                     await refresh()
-                } catch { updateMessage = "Saved locally · filter update not confirmed"; self.error = error.localizedDescription }
-            } else { updateMessage = "Saved locally · applies when the firewall is enabled" }
+                } catch { updateMessage = "Saved · filter update unconfirmed"; self.error = error.localizedDescription }
+            } else { updateMessage = "Saved · filter disabled" }
         }
     }
     private func saveLocal() {
@@ -118,7 +118,7 @@ final class FirewallModel: ObservableObject {
         panel.directoryURL = URL(fileURLWithPath: "/Applications", isDirectory: true)
         panel.allowsMultipleSelection = false; panel.canChooseDirectories = true
         panel.canChooseFiles = true; panel.treatsFilePackagesAsDirectories = false
-        panel.message = "Choose an app to create an Allow or Block rule."
+        panel.message = "App or executable"
         panel.prompt = "Add app"
         let completion: (NSApplication.ModalResponse) -> Void = { [weak self] response in
             guard response == .OK, let url = panel.url else { return }
@@ -159,7 +159,7 @@ final class FirewallModel: ObservableObject {
     func togglePreview() {
         if preview {
             preview = false; policy = savedBeforePreview ?? FirewallPolicy(); savedBeforePreview = nil
-            connections = []; connected = false; updateMessage = nil; status = "Network filter is not connected"
+            connections = []; connected = false; updateMessage = nil; status = "Filter disconnected"
             Task { await refresh() }; return
         }
         guard !connected && !saving && !setup.enabled else { return }
@@ -179,6 +179,6 @@ final class FirewallModel: ObservableObject {
             if record.action == .allow { record.bytesIn = UInt64((i + 1) * 18_432); record.bytesOut = UInt64((i + 1) * 1024) }
             return record
         }
-        activeFlows = 12; status = "Sample connections"; updateMessage = "Preview only · no network settings changed"
+        activeFlows = 12; status = "Sample connections"; updateMessage = "Preview · changes not applied"
     }
 }
