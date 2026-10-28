@@ -113,7 +113,7 @@ struct FirewallWindow: View {
                 FirewallSeparator()
                 HStack(spacing: 8) {
                     Rectangle().fill(statusColor).frame(width: 7, height: 7)
-                    Text(model.preview ? "[PREVIEW]" : model.connected ? "[FILTER ONLINE]" : "[FILTER OFFLINE]")
+                    Text(model.preview ? "[PREVIEW]" : model.connected ? "[FILTER ONLINE]" : setup.enabled ? "[FILTER UNREACHABLE]" : "[FILTER OFFLINE]")
                         .font(.system(size: 12, weight: .semibold, design: .monospaced))
                 }.padding(.top, 6)
                 Text("v\(Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "0.1.0")")
@@ -166,7 +166,7 @@ struct FirewallWindow: View {
         if model.connections.isEmpty && !model.connected && !model.preview {
             VStack(spacing: 17) {
                 PixelShield(size: 78).padding(.bottom, 12)
-                Text("FILTER OFFLINE").font(.system(size: 24, weight: .semibold, design: .monospaced)).tracking(1)
+                Text(setup.enabled ? "FILTER UNREACHABLE" : "FILTER OFFLINE").font(.system(size: 24, weight: .semibold, design: .monospaced)).tracking(1)
                 HStack(spacing: 12) {
                     Button("SETUP") { page = .setup }.buttonStyle(TerminalButtonStyle(primary: true))
                     Button("PREVIEW") { model.togglePreview() }

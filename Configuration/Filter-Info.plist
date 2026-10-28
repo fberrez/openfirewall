@@ -25,13 +25,13 @@
 	<key>FirewallFilterIdentifier</key>
 	<string>$(FIREWALL_FILTER_ID)</string>
 	<key>FirewallMachService</key>
-	<string>$(FIREWALL_GROUP_ID).control</string>
+	<string>$(FIREWALL_MACH_SERVICE)</string>
 	<key>NSSystemExtensionUsageDescription</key>
 	<string>Apply per-app network rules and show connection metadata.</string>
 	<key>NetworkExtension</key>
 	<dict>
 		<key>NEMachServiceName</key>
-		<string>$(FIREWALL_GROUP_ID).control</string>
+		<string>$(FIREWALL_MACH_SERVICE)</string>
 		<key>NEProviderClasses</key>
 		<dict>
 			<key>com.apple.networkextension.filter-data</key>

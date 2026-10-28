@@ -22,7 +22,19 @@ final class FilterClient {
         let connection = NSXPCConnection(machServiceName: ProductConfiguration.serviceName, options: .privileged)
         connection.setCodeSigningRequirement(requirement)
         connection.remoteObjectInterface = NSXPCInterface(with: FirewallControlProtocol.self)
-        connection.invalidationHandler = { [weak self] in Task { @MainActor in self?.connection = nil } }
+        connection.invalidationHandler = { [weak self, weak connection] in
+            Task { @MainActor in
+                guard let self, let connection, self.connection === connection else { return }
+                self.connection = nil
+            }
+        }
+        connection.interruptionHandler = { [weak self, weak connection] in
+            Task { @MainActor in
+                guard let self, let connection, self.connection === connection else { return }
+                self.connection = nil
+                connection.invalidate()
+            }
+        }
         connection.resume(); self.connection = connection
         return connection
     }

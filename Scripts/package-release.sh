@@ -37,9 +37,8 @@ OpenFirewall
 4. Approve the system extension and network filter when macOS asks.
 5. In Applications, click + Add app. Select an app, then choose Allow or Block.
 
-Upgrade: quit OpenFirewall, replace it in Applications, reopen it, then choose
-Setup > Update firewall. Reconnect or restart apps to replace older connections.
-Saved rules are retained.
+Upgrade validation is pending. Do not replace an active filter on a working Mac.
+Release status and upgrade test results: https://github.com/fberrez/openfirewall/releases
 
 Apps are allowed by default. Quitting the interface leaves an enabled filter running.
 To stop filtering, open Setup and click Disable firewall.
