@@ -26,6 +26,8 @@
 	<string>$(FIREWALL_FILTER_ID)</string>
 	<key>FirewallMachService</key>
 	<string>$(FIREWALL_GROUP_ID).control</string>
+	<key>LSApplicationCategoryType</key>
+	<string>public.app-category.utilities</string>
 	<key>LSMinimumSystemVersion</key>
 	<string>14.0</string>
 	<key>NSHumanReadableCopyright</key>

@@ -245,13 +245,16 @@ struct FirewallWindow: View {
                 .font(.title2.weight(.semibold)).foregroundStyle(.teal)
             Text("OpenFirewall uses a macOS network extension. macOS asks you to approve it before it can monitor or block connections.").foregroundStyle(.secondary)
             VStack(alignment: .leading, spacing: 16) {
-                setupStep("1", title: "Use a signed app", detail: "Build with your Apple signing team and move OpenFirewall to Applications. See the included README for setup.")
+                setupStep("1", title: "Install OpenFirewall", detail: "Move OpenFirewall to Applications, then open it from there.")
                 setupStep("2", title: "Approve the network extension", detail: "Choose Enable firewall, then approve OpenFirewall in System Settings if requested.")
                 setupStep("3", title: "Choose your app rules", detail: "Connections are allowed by default. Add Block rules for apps you want to keep offline.")
             }.padding(22).background(.background, in: RoundedRectangle(cornerRadius: 10))
             Text(setup.message).font(.callout).textSelection(.enabled)
             HStack {
                 if setup.enabled {
+                    Button("Update firewall") { model.enable() }
+                        .help("Install the network extension included with this version of OpenFirewall.")
+                        .disabled(setup.busy || model.preview)
                     Button("Disable firewall") { model.disable() }.disabled(setup.busy || model.preview)
                 } else {
                     Button("Enable firewall") { model.enable() }.buttonStyle(.borderedProminent).disabled(setup.busy || model.preview)

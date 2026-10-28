@@ -28,13 +28,27 @@
 
 Native SwiftUI interface. No accounts, subscriptions, license keys, telemetry, or third-party runtime dependencies.
 
+## Install
+
+**[Download OpenFirewall for macOS](https://github.com/fberrez/openfirewall/releases/download/v0.1.0-alpha.1/OpenFirewall-0.1.0-alpha.1-universal.dmg)** · [Release notes and checksums](https://github.com/fberrez/openfirewall/releases/tag/v0.1.0-alpha.1)
+
+1. Open the downloaded disk image.
+2. Drag **OpenFirewall** to **Applications**.
+3. Open OpenFirewall from Applications.
+4. In **Setup**, click **Enable firewall**. Approve the system extension and network filter when macOS asks.
+5. In **Applications**, click **+ Add app**, select an app, and choose **Allow** or **Block**.
+
+The app is Developer ID-signed and notarized by Apple. The download includes Apple Silicon and Intel binaries. You do not need Xcode or an Apple Developer account to install it. macOS approval is required for network filtering.
+
+To upgrade, quit the interface, replace the app in Applications, reopen it, and choose **Setup → Update firewall**. Your saved rules are retained. macOS may request approval for the extension update.
+
 ## Project status
 
-**Early development, version 0.1.** A development-signed build has been tested on one Apple Silicon Mac. Actual TCP and UDP tests passed Allow → Block → Allow. Tests also confirmed that Block disconnects an existing TCP connection and continues working after quitting the interface.
+**Early alpha, version 0.1.0-alpha.1.** Actual TCP and UDP tests on one Apple Silicon Mac passed Allow → Block → Allow. Tests also confirmed that Block disconnects an existing TCP connection and continues working after quitting the interface.
 
-There is **no ready-to-install, notarized public download yet**. Building the interface is straightforward. Enabling live filtering also requires Apple signing, provisioning, and approval in macOS. See [Building and installation](docs/building.md).
+The signed public alpha is available above. To build your own version, see [Building and installation](docs/building.md). Signing and provisioning are required for self-built versions that enable live filtering.
 
-macOS 14 is the deployment target. Live verification used macOS 26.2. Compatibility across other Macs and network configurations is still being checked. [Verification details and release checklist](VERIFY.md).
+macOS 14 is the deployment target. Live verification used macOS 26.2 on Apple Silicon. The Intel binary builds, but has not been tested on an Intel Mac. Compatibility across other Macs and network configurations is still being checked. [Verification details and release checklist](VERIFY.md).
 
 ## Roadmap
 
@@ -52,7 +66,7 @@ Live enforcement has been verified on one Mac. These checks do not establish com
 
 ### Next: public alpha
 
-- [ ] Provide a Developer ID-signed, notarized download.
+- [x] Provide a Developer ID-signed, notarized alpha download.
 - [ ] Improve setup guidance and recovery when macOS approval is pending or denied.
 - [ ] Validate app upgrades, extension replacement, disabling, and removal.
 - [ ] Verify saved rules after reboot and recovery after provider crashes.
@@ -96,7 +110,7 @@ For a working firewall, follow the [signed development build instructions](docs/
 
 ## Use OpenFirewall
 
-After installing and approving a signed build:
+After [installing OpenFirewall](#install):
 
 1. Open **Setup** and choose **Enable firewall**. Complete the macOS approval prompts.
 2. Open **Applications**. Click **+ Add app** at the top right.

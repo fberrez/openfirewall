@@ -4,10 +4,13 @@ import SystemExtensions
 
 @MainActor
 final class SystemSetup: NSObject, ObservableObject, OSSystemExtensionRequestDelegate {
-    @Published var message = "Install the signed app in Applications, then enable the firewall."
+    @Published var message = "Move OpenFirewall to Applications, then enable the firewall."
     @Published var busy = false
     @Published var enabled = false
     private var activation: CheckedContinuation<Void, Error>?
+    private var activationRequest: OSSystemExtensionRequest?
+    private var inspection: CheckedContinuation<Bool, Error>?
+    private var inspectionRequest: OSSystemExtensionRequest?
     private var configurationObserver: NSObjectProtocol?
 
     override init() {
@@ -23,6 +26,10 @@ final class SystemSetup: NSObject, ObservableObject, OSSystemExtensionRequestDel
             try await loadPreferences()
             enabled = NEFilterManager.shared().isEnabled &&
                 NEFilterManager.shared().providerConfiguration?.filterDataProviderBundleIdentifier == ProductConfiguration.filterIdentifier
+            if !busy {
+                message = enabled ? "Firewall is enabled. Your app rules are active." :
+                    "Enable the firewall, then approve OpenFirewall when macOS asks."
+            }
         }
         catch { message = "Setup is required before connection monitoring can start." }
     }
@@ -36,14 +43,33 @@ final class SystemSetup: NSObject, ObservableObject, OSSystemExtensionRequestDel
         }
         busy = true; defer { busy = false }
         message = "Requesting macOS approval…"
-        try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Void, Error>) in
-            activation = continuation
-            let request = OSSystemExtensionRequest.activationRequest(forExtensionWithIdentifier: ProductConfiguration.filterIdentifier, queue: .main)
-            request.delegate = self
-            OSSystemExtensionManager.shared.submitRequest(request)
+        if try await !currentExtensionIsEnabled() {
+            try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Void, Error>) in
+                activation = continuation
+                let request = OSSystemExtensionRequest.activationRequest(forExtensionWithIdentifier: ProductConfiguration.filterIdentifier, queue: .main)
+                activationRequest = request
+                request.delegate = self
+                OSSystemExtensionManager.shared.submitRequest(request)
+            }
         }
         try await persist(policy, enable: true)
         enabled = true; message = "Firewall enabled. Waiting for the network filter…"
+    }
+    private func currentExtensionIsEnabled() async throws -> Bool {
+        try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Bool, Error>) in
+            inspection = continuation
+            let request = OSSystemExtensionRequest.propertiesRequest(forExtensionWithIdentifier: ProductConfiguration.filterIdentifier, queue: .main)
+            inspectionRequest = request
+            request.delegate = self
+            OSSystemExtensionManager.shared.submitRequest(request)
+            Task { @MainActor [weak self] in
+                try? await Task.sleep(for: .seconds(10))
+                guard let self, self.inspectionRequest === request else { return }
+                let continuation = self.inspection
+                self.inspection = nil; self.inspectionRequest = nil
+                continuation?.resume(throwing: clientError("macOS did not return the installation status. Try enabling the firewall again."))
+            }
+        }
     }
     func disable() async throws {
         busy = true; defer { busy = false }
@@ -95,19 +121,47 @@ final class SystemSetup: NSObject, ObservableObject, OSSystemExtensionRequestDel
         }
     }
     nonisolated func requestNeedsUserApproval(_ request: OSSystemExtensionRequest) {
-        Task { @MainActor in self.message = "Approve OpenFirewall in System Settings → General → Login Items & Extensions → Network Extensions." }
+        Task { @MainActor in
+            guard self.activationRequest === request else { return }
+            self.message = "Approve OpenFirewall in System Settings → General → Login Items & Extensions → Network Extensions."
+        }
+    }
+    nonisolated func request(_ request: OSSystemExtensionRequest, foundProperties properties: [OSSystemExtensionProperties]) {
+        Task { @MainActor in
+            guard self.inspectionRequest === request else { return }
+            let path = Bundle.main.bundleURL.appendingPathComponent("Contents/Library/SystemExtensions/\(ProductConfiguration.filterIdentifier).systemextension")
+            let info = Bundle(url: path)?.infoDictionary
+            let current = properties.contains {
+                $0.isEnabled && !$0.isUninstalling && $0.bundleVersion == info?["CFBundleVersion"] as? String &&
+                    $0.bundleShortVersion == info?["CFBundleShortVersionString"] as? String
+            }
+            let continuation = self.inspection
+            self.inspection = nil; self.inspectionRequest = nil
+            continuation?.resume(returning: current)
+        }
     }
     nonisolated func request(_ request: OSSystemExtensionRequest, actionForReplacingExtension existing: OSSystemExtensionProperties,
                              withExtension ext: OSSystemExtensionProperties) -> OSSystemExtensionRequest.ReplacementAction { .replace }
     nonisolated func request(_ request: OSSystemExtensionRequest, didFinishWithResult result: OSSystemExtensionRequest.Result) {
         Task { @MainActor in
-            let continuation = self.activation; self.activation = nil
+            guard self.activationRequest === request else { return }
+            let continuation = self.activation; self.activation = nil; self.activationRequest = nil
             if result == .willCompleteAfterReboot {
                 continuation?.resume(throwing: clientError("Restart your Mac to finish enabling the extension, then enable the firewall again."))
             } else { continuation?.resume() }
         }
     }
     nonisolated func request(_ request: OSSystemExtensionRequest, didFailWithError error: Error) {
-        Task { @MainActor in let continuation = self.activation; self.activation = nil; continuation?.resume(throwing: error) }
+        Task { @MainActor in
+            if self.inspectionRequest === request {
+                let continuation = self.inspection
+                self.inspection = nil; self.inspectionRequest = nil
+                continuation?.resume(throwing: error)
+            } else if self.activationRequest === request {
+                let continuation = self.activation
+                self.activation = nil; self.activationRequest = nil
+                continuation?.resume(throwing: error)
+            }
+        }
     }
 }

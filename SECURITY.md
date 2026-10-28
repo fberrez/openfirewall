@@ -10,6 +10,6 @@ Keep exploitable details out of public issues until a fix or coordinated disclos
 
 ## Support scope
 
-OpenFirewall is in early development. Security fixes are targeted at the latest `main` branch. There is no stable binary release or guaranteed response time yet.
+OpenFirewall is in early development. Security fixes target the current public alpha and the latest `main` branch. There is no stable binary release or guaranteed response time yet.
 
 The current test coverage and unqualified scenarios are documented in [VERIFY.md](VERIFY.md). In particular, the project does not claim fail-closed behavior during a provider crash or full coverage of every macOS network path.

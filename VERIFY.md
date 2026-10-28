@@ -14,6 +14,14 @@ On 2026-10-28, a development Mac running macOS 26.2 on Apple Silicon ran a prope
 
 Ten core tests and the Security.framework identity smoke test also passed. CI repeats these checks and builds the unsigned app. Real connection histories, signing profiles, and local diagnostic artifacts are not part of this repository. No reboot, provider-crash, or all-network-path claim follows from the local checks.
 
+## Public alpha artifact checks
+
+Version `0.1.0-alpha.1` uses app version `0.1.0`, build `4`. Both executables contain Apple Silicon and Intel slices. Developer ID signatures, secure timestamps, hardened runtime, and distribution profiles passed validation. The profiles authorize all devices and contain no development-device list. The app's stapled notarization ticket validated and Gatekeeper accepted it.
+
+The packaging helper mounts the completed DMG read-only and repeats those checks on its app. It verifies the disk-image checksum and writes `SHA256SUMS`. These are artifact checks, not proof of enforcement on every Mac. Only Apple Silicon has received live device testing; Intel remains untested on hardware.
+
+Switching an existing installation from development signing to Developer ID exposed a cached macOS signing requirement in the old network-filter configuration. Migration requires recreating that owned configuration and approving filtering again. The local rule file is retained. Setup now checks whether the bundled extension is already enabled before submitting another activation request, and retains its requests until completion.
+
 ## Broader distribution testing
 
 The checklist below covers a public release across machines and network configurations. Some items combine a locally verified behavior with additional scenarios. An unchecked item means the whole combined item has not been qualified for distribution.
@@ -22,7 +30,7 @@ Use a disposable test app with its own signing identifier and a TCP/UDP client. 
 
 `bash Scripts/build-probe.sh` builds a separate ad-hoc signed app for these tests. It sends a TCP HTTP request to example.com and a UDP STUN binding request to Cloudflare's public STUN service. It saves only success, timing, and response length beside the test app. It does not change firewall rules. Establish that both requests succeed before testing a Block rule, then verify Block → failure → Allow → success while checking matching flow records in OpenFirewall.
 
-- [ ] Both targets sign with the same team and correct capabilities. The extension is embedded in `Contents/Library/SystemExtensions` and its signature verifies.
+- [x] Both targets sign with the same team and correct capabilities. The extension is embedded in `Contents/Library/SystemExtensions` and its signature verifies.
 - [ ] Installing under `/Applications` and choosing Enable triggers the expected system-extension and network-filter approvals. Declining approval leaves a useful, recoverable setup state.
 - [ ] The signed app connects to the extension. The UI reports “Filtering connections.” A different team or bundle identifier cannot read or change policy through XPC.
 - [ ] A TCP connection made by the test app appears with the expected verified identity, endpoint, direction, and decision.

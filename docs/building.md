@@ -1,5 +1,7 @@
 # Building and installation
 
+To use the firewall, download the [signed public alpha](https://github.com/fberrez/openfirewall/releases/tag/v0.1.0-alpha.1) and follow the [installation steps](../README.md#install). No developer account is needed for the download. This guide is for building from source.
+
 ## Requirements
 
 - macOS 14 or later. Live testing has used Apple Silicon and macOS 26.2.
@@ -73,10 +75,12 @@ Identifiers also configure the Info keys, Mach service, app group, and embedded 
 
 **An app still connects.** Confirm which app or helper appears in Connections. Rules follow the source identity supplied by macOS. A helper may need its own rule. A pinned-build rule may also need to be recreated after an executable update.
 
+**Switching from a development build to the public download.** macOS may retain a filter configuration that requires the old development signature. If the notarized app cannot connect after the extension update, remove the old OpenFirewall filter in **System Settings → Network → VPN & Filters**, then reopen the public app and enable it again. Approve the new filtering request. Saved app rules remain in the local rule file. This is a signing migration; ordinary updates between public builds keep the same Developer ID identity.
+
 ## Public distribution
 
 Development signing uses `content-filter-provider`. Developer ID distribution uses `content-filter-provider-systemextension` and requires matching Developer ID profiles and a Developer ID identity. [Apple's signing explanation](https://developer.apple.com/forums/thread/737894) describes the distinction.
 
-A public binary release still needs a complete Developer ID signing and notarization workflow, update and removal testing, and broader signed-device validation. The repository currently provides source, not a notarized installer. Never distribute a development certificate, private key, or provisioning credentials.
+The public alpha uses Developer ID signing, distribution provisioning profiles, and a stapled notarization ticket. [Releasing](releasing.md) documents the packaging and validation workflow. Broader signed-device, recovery, and removal testing remains in [VERIFY.md](../VERIFY.md). Never distribute a development certificate, private key, or provisioning credentials.
 
 Apple references: [Network Extension deployment](https://developer.apple.com/documentation/technotes/tn3134-network-extension-provider-deployment), [installing system extensions](https://developer.apple.com/documentation/systemextensions/installing-system-extensions-and-drivers).

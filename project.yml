@@ -16,7 +16,7 @@ settings:
     ENABLE_HARDENED_RUNTIME: YES
     ENABLE_USER_SCRIPT_SANDBOXING: NO
     MARKETING_VERSION: "0.1.0"
-    CURRENT_PROJECT_VERSION: "2"
+    CURRENT_PROJECT_VERSION: "4"
 targets:
   OpenFirewall:
     type: application
@@ -33,6 +33,7 @@ targets:
         CFBundleShortVersionString: "$(MARKETING_VERSION)"
         CFBundleVersion: "$(CURRENT_PROJECT_VERSION)"
         LSMinimumSystemVersion: "14.0"
+        LSApplicationCategoryType: public.app-category.utilities
         NSHumanReadableCopyright: "Copyright © 2026 OpenFirewall contributors. MIT licensed."
         FirewallAppIdentifier: "$(FIREWALL_APP_ID)"
         FirewallFilterIdentifier: "$(FIREWALL_FILTER_ID)"
