@@ -20,6 +20,8 @@ Version `0.1.0-alpha.1` uses app version `0.1.0`, build `4`. Both executables co
 
 The packaging helper mounts the completed DMG read-only and repeats those checks on its app. It verifies the disk-image checksum and writes `SHA256SUMS`. These are artifact checks, not proof of enforcement on every Mac. Only Apple Silicon has received live device testing; Intel remains untested on hardware.
 
+The Developer ID-signed build `4` was installed on the same Apple Silicon Mac and its system extension was activated. The loaded provider's hash matched the shipped provider. After macOS filtering approval, fresh TCP and UDP requests passed Allow → Block → Allow through the GUI. The existing saved rule was retained, live and persisted policy agreed, and the temporary test rule was removed. Repeating **Update firewall** for the already enabled version returned without stalling. GitHub's core tests, identity smoke test, and unsigned app build also passed for the release source.
+
 Switching an existing installation from development signing to Developer ID exposed a cached macOS signing requirement in the old network-filter configuration. Migration requires recreating that owned configuration and approving filtering again. The local rule file is retained. Setup now checks whether the bundled extension is already enabled before submitting another activation request, and retains its requests until completion.
 
 ## Broader distribution testing
