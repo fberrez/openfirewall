@@ -78,14 +78,6 @@ struct PixelShield: View {
     }
 }
 
-struct FirewallSectionLabel: View {
-    let title: String
-    var body: some View {
-        Text(title).font(.system(size: 10, weight: .semibold, design: .monospaced)).tracking(1.1)
-            .foregroundStyle(FirewallTheme.secondary)
-    }
-}
-
 struct FirewallSeparator: View {
     var body: some View { Rectangle().fill(FirewallTheme.line).frame(height: 1).accessibilityHidden(true) }
 }

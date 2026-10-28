@@ -18,7 +18,6 @@ struct InstalledApplicationPicker: View {
                 PixelShield(size: 30)
                 Text("> ADD APP").font(.system(size: 24, weight: .semibold, design: .monospaced)).tracking(-0.5)
             }
-            Text("Choose an app to manage its internet access.").font(.system(size: 12, design: .monospaced)).foregroundStyle(FirewallTheme.secondary)
             FirewallSearchField(prompt: "Search installed apps", text: $search)
             if loading {
                 ProgressView().frame(maxWidth: .infinity, maxHeight: .infinity)

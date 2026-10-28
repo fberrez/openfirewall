@@ -91,12 +91,8 @@ struct FirewallWindow: View {
         VStack(alignment: .leading, spacing: 0) {
             HStack(spacing: 10) {
                 Text("[>_]").font(.system(size: 20, weight: .bold, design: .monospaced)).foregroundStyle(FirewallTheme.accent).accessibilityHidden(true)
-                VStack(alignment: .leading, spacing: 3) {
-                    Text("OPENFIREWALL").font(.system(size: 13, weight: .bold, design: .monospaced)).tracking(0.6)
-                    Text("LOCAL NETWORK CONTROL").font(.system(size: 8, design: .monospaced)).foregroundStyle(FirewallTheme.secondary)
-                }
+                Text("OPENFIREWALL").font(.system(size: 13, weight: .bold, design: .monospaced)).tracking(0.6)
             }.padding(.horizontal, 18).padding(.top, 28).padding(.bottom, 32)
-            FirewallSectionLabel(title: "// MODULES").padding(.horizontal, 24).padding(.bottom, 12)
             VStack(spacing: 5) {
                 ForEach(FirewallPage.allCases) { item in
                     Button { page = item } label: {
@@ -120,23 +116,18 @@ struct FirewallWindow: View {
                     Text(model.preview ? "[PREVIEW]" : model.connected ? "[FILTER ONLINE]" : "[FILTER OFFLINE]")
                         .font(.system(size: 12, weight: .semibold, design: .monospaced))
                 }.padding(.top, 6)
-                Text(model.preview ? "Sample data. No filtering." : model.connected ? "Your app rules are active." : "Open Setup to get connected.")
-                    .font(.system(size: 11, design: .monospaced)).foregroundStyle(FirewallTheme.secondary)
-                Text("OPEN SOURCE / MIT\nv\(Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "0.1.0")")
-                    .font(.system(size: 10, design: .monospaced)).lineSpacing(5).foregroundStyle(FirewallTheme.secondary).padding(.top, 10)
+                Text("v\(Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "0.1.0")")
+                    .font(.system(size: 10, design: .monospaced)).foregroundStyle(FirewallTheme.secondary)
             }.padding(22)
         }.frame(maxWidth: .infinity, maxHeight: .infinity).background(FirewallTheme.sidebar)
     }
 
     private var pageHeader: some View {
         HStack(alignment: .center, spacing: 18) {
-            VStack(alignment: .leading, spacing: 7) {
-                HStack(spacing: 10) {
-                    Text(">").foregroundStyle(FirewallTheme.accent).accessibilityHidden(true)
-                    Text(page == .connections ? "CONNECTION LOG" : page.rawValue.uppercased())
-                }.font(.system(size: 24, weight: .semibold, design: .monospaced)).tracking(0.6)
-                Text(subtitle).font(.system(size: 12, design: .monospaced)).foregroundStyle(FirewallTheme.secondary)
-            }
+            HStack(spacing: 10) {
+                Text(">").foregroundStyle(FirewallTheme.accent).accessibilityHidden(true)
+                Text(page.rawValue.uppercased())
+            }.font(.system(size: 24, weight: .semibold, design: .monospaced)).tracking(0.6)
             Spacer(minLength: 12)
             if page == .connections {
                 Button { model.exportHistory() } label: { Label("EXPORT", systemImage: "square.and.arrow.up") }
@@ -150,20 +141,11 @@ struct FirewallWindow: View {
         }.padding(.horizontal, 28).padding(.top, 25).padding(.bottom, 28)
     }
 
-    private var subtitle: String {
-        switch page {
-        case .connections: "Inspect destinations. Trace decisions. Control access."
-        case .applications: "Manage internet access, one app at a time."
-        case .rules: "Explicit app rules override the default policy."
-        case .setup: "Configure the network filter and interface."
-        }
-    }
-
     private var statusColor: Color { model.preview ? FirewallTheme.accent : model.connected ? FirewallTheme.allow : FirewallTheme.secondary }
 
     private var previewBanner: some View {
         HStack {
-            Label("Preview · sample connections, no filtering", systemImage: "eye")
+            Label("PREVIEW · FILTER OFF", systemImage: "eye")
             Spacer()
             Button("EXIT PREVIEW") { model.togglePreview() }
         }.font(.system(size: 11, design: .monospaced)).padding(.horizontal, 28).padding(.vertical, 10).background(FirewallTheme.selection)
@@ -176,7 +158,6 @@ struct FirewallWindow: View {
                 Rectangle().fill(statusColor).frame(width: 5, height: 5)
                 Text(model.updateMessage ?? model.status).lineLimit(1)
                 Spacer()
-                Text("LOCAL ONLY // NO TELEMETRY").foregroundStyle(FirewallTheme.secondary)
             }.font(.system(size: 10, design: .monospaced)).padding(.horizontal, 28).padding(.vertical, 12)
         }
     }
@@ -186,13 +167,10 @@ struct FirewallWindow: View {
             VStack(spacing: 17) {
                 PixelShield(size: 78).padding(.bottom, 12)
                 Text("FILTER OFFLINE").font(.system(size: 24, weight: .semibold, design: .monospaced)).tracking(1)
-                Text("Enable the firewall to see live connections\nand choose which apps can access the internet.")
-                    .font(.system(size: 13, design: .monospaced)).lineSpacing(4).multilineTextAlignment(.center).foregroundStyle(FirewallTheme.secondary)
                 HStack(spacing: 12) {
-                    Button("Set up firewall") { page = .setup }.buttonStyle(TerminalButtonStyle(primary: true))
-                    Button("Explore preview") { model.togglePreview() }
+                    Button("SETUP") { page = .setup }.buttonStyle(TerminalButtonStyle(primary: true))
+                    Button("PREVIEW") { model.togglePreview() }
                 }.controlSize(.large).padding(.top, 7)
-                Text("[NO ACCOUNT] [NO SUBSCRIPTION] [LOCAL ONLY]").font(.system(size: 10, design: .monospaced)).foregroundStyle(FirewallTheme.secondary).padding(.top, 10)
             }.frame(maxWidth: .infinity, maxHeight: .infinity).padding(40)
         } else {
             connectionSummary
@@ -206,12 +184,12 @@ struct FirewallWindow: View {
             }.padding(.horizontal, 28).padding(.vertical, 18)
             connectionTable
             HStack {
-                Text("\(filtered.count) shown · latest 500 connections")
+                Text("\(filtered.count) of \(model.connections.count) connections")
                 Spacer()
-                Text(model.evicted > 0 ? "\(model.evicted) older records removed" : "Byte counts update every 5 seconds")
+                if model.evicted > 0 { Text("\(model.evicted) evicted") }
             }.font(.system(size: 10, design: .monospaced)).foregroundStyle(FirewallTheme.secondary).padding(.horizontal, 28).padding(.vertical, 12)
             if model.untracked > 0 {
-                Label("Tracking limit reached. New connections still use your rules. Some open connections must reconnect for rule changes.", systemImage: "exclamationmark.triangle")
+                Label("Tracking limit reached. Reconnect apps to apply rule changes to all flows.", systemImage: "exclamationmark.triangle")
                     .font(.system(size: 11, design: .monospaced)).foregroundStyle(FirewallTheme.warning).padding(.horizontal, 28).padding(.bottom, 12)
             }
         }
@@ -268,10 +246,8 @@ struct FirewallWindow: View {
             .overlay {
                 if filtered.isEmpty {
                     VStack(spacing: 12) {
-                        Text(model.connections.isEmpty ? "WAITING FOR CONNECTIONS" : "NO MATCHING CONNECTIONS")
+                        Text(model.connections.isEmpty ? "NO CONNECTIONS" : "NO MATCHES")
                             .font(.system(size: 14, weight: .semibold, design: .monospaced))
-                        Text(model.connections.isEmpty ? "New connections will appear here." : "Try a different search or decision filter.")
-                            .font(.system(size: 12, design: .monospaced)).foregroundStyle(FirewallTheme.secondary)
                         if !search.isEmpty || decisionFilter != "All" {
                             Button("RESET FILTERS") { search = ""; decisionFilter = "All" }.padding(.top, 4)
                         }
@@ -284,23 +260,19 @@ struct FirewallWindow: View {
         VStack(alignment: .leading, spacing: 20) {
             HStack(spacing: 20) {
                 Image(systemName: "arrow.triangle.branch").font(.system(size: 24, weight: .light, design: .monospaced)).foregroundStyle(FirewallTheme.accent)
-                VStack(alignment: .leading, spacing: 5) {
-                    Text("Apps without a rule").font(.system(size: 14, weight: .semibold, design: .monospaced))
-                    Text("An app’s own rule always takes priority.").font(.system(size: 12, design: .monospaced)).foregroundStyle(FirewallTheme.secondary)
-                }
+                Text("Default").font(.system(size: 14, weight: .semibold, design: .monospaced))
+                    .help("Used for apps without an explicit rule.")
                 Spacer()
                 TerminalSegments(title: "Default action", values: FirewallAction.allCases,
                     selection: Binding(get: { model.policy.defaultAction }, set: model.setDefault), label: { $0.title }, destructive: { $0 == .deny }).frame(width: 180)
             }.padding(20).background(FirewallTheme.panel).overlay(Rectangle().strokeBorder(FirewallTheme.line, lineWidth: 1))
             HStack {
-                FirewallSectionLabel(title: "APP RULES")
-                Text("\(model.policy.rules.count)").font(.system(size: 11, design: .monospaced)).foregroundStyle(FirewallTheme.secondary)
+                Text("\(model.policy.rules.count) rules").font(.system(size: 11, design: .monospaced)).foregroundStyle(FirewallTheme.secondary)
             }.padding(.top, 4)
             if model.policy.rules.isEmpty {
                 ContentUnavailableView {
-                    Label("Make your first rule", systemImage: "slider.horizontal.3")
-                } description: { Text("Choose an app and decide whether it can connect.") }
-                actions: { Button("Add app") { model.addApplication() } }
+                    Label("No rules", systemImage: "slider.horizontal.3")
+                } actions: { Button("ADD APP") { model.addApplication() } }
             } else {
                 ScrollView { LazyVStack(spacing: 0) {
                     ForEach(model.policy.rules.sorted { $0.application.name.localizedStandardCompare($1.application.name) == .orderedAscending }) { rule in
@@ -309,7 +281,7 @@ struct FirewallWindow: View {
                     }
                 }}
             }
-            Label("Blocked connections must reconnect after you change a rule to Allow.", systemImage: "info.circle")
+            Label("Reconnect blocked apps after Allow.", systemImage: "info.circle")
                 .font(.system(size: 11, design: .monospaced)).foregroundStyle(FirewallTheme.secondary).padding(.bottom, 20)
         }.padding(.horizontal, 28)
     }
@@ -318,16 +290,13 @@ struct FirewallWindow: View {
         let known = Dictionary((model.connections.map(\.application) + model.policy.rules.map(\.application)).map { ($0.id, $0) }, uniquingKeysWith: { first, _ in first })
         return ScrollView { LazyVStack(alignment: .leading, spacing: 0) {
             HStack {
-                FirewallSectionLabel(title: "OBSERVED & ADDED")
-                Spacer()
                 Text("\(known.count) apps").font(.system(size: 11, design: .monospaced)).foregroundStyle(FirewallTheme.secondary)
             }.padding(.bottom, 15)
             FirewallSeparator()
             if known.isEmpty {
                 ContentUnavailableView {
-                    Label("Choose an app to get started", systemImage: "square.grid.2x2")
-                } description: { Text("Apps also appear here when the firewall observes a connection.") }
-                actions: { Button("Add app") { model.addApplication() } }
+                    Label("No apps", systemImage: "square.grid.2x2")
+                } actions: { Button("ADD APP") { model.addApplication() } }
             }
             ForEach(known.values.sorted { $0.name.localizedStandardCompare($1.name) == .orderedAscending }) { app in
                 appRuleRow(app, action: model.explicitAction(app.id) ?? model.policy.defaultAction, removable: false)
@@ -364,23 +333,7 @@ struct FirewallWindow: View {
 
     private var setupContent: some View {
         ScrollView { VStack(alignment: .leading, spacing: 24) {
-            HStack(spacing: 24) {
-                PixelShield(size: 66)
-                VStack(alignment: .leading, spacing: 8) {
-                    Text(model.connected ? "FILTER ONLINE" : "INITIALIZE FILTER")
-                        .font(.system(size: 23, weight: .semibold, design: .monospaced)).tracking(-0.5)
-                    Text(model.connected ? "OpenFirewall is filtering connections on this Mac." : "macOS needs your approval before OpenFirewall can filter connections.")
-                        .font(.system(size: 12, design: .monospaced)).foregroundStyle(FirewallTheme.secondary)
-                }
-                Spacer(minLength: 0)
-            }.padding(24).frame(maxWidth: .infinity, alignment: .leading).background(FirewallTheme.sidebar)
-                .overlay(Rectangle().strokeBorder(FirewallTheme.line, lineWidth: 1))
-            VStack(alignment: .leading, spacing: 22) {
-                setupStep("01", title: "Keep it in Applications", detail: "Move OpenFirewall to Applications and open it from there.")
-                setupStep("02", title: "Give macOS the go-ahead", detail: "Enable the firewall below. Approve the extension and network filter when macOS asks.")
-                setupStep("03", title: "Make the rules yours", detail: "Apps are allowed by default. Add a Block rule to keep an app offline.")
-            }.padding(.vertical, 4)
-            FirewallSeparator()
+            Text("Network filter").font(.system(size: 14, weight: .semibold, design: .monospaced))
             Text(setup.message).font(.system(size: 12, design: .monospaced)).foregroundStyle(FirewallTheme.secondary).textSelection(.enabled)
             HStack(spacing: 12) {
                 if setup.enabled {
@@ -396,34 +349,14 @@ struct FirewallWindow: View {
             }.controlSize(.large)
             FirewallSeparator()
             HStack {
-                VStack(alignment: .leading, spacing: 5) {
-                    Text("Appearance").font(.system(size: 13, weight: .semibold, design: .monospaced))
-                    Text("Terminal is the default theme.").font(.system(size: 11, design: .monospaced)).foregroundStyle(FirewallTheme.secondary)
-                }
+                Text("Appearance").font(.system(size: 13, weight: .semibold, design: .monospaced))
                 Spacer()
                 TerminalSegments(title: "Appearance", values: FirewallAppearance.allCases.map(\.rawValue), selection: $appearance,
                     label: { FirewallAppearance(rawValue: $0)?.title ?? $0 }).frame(width: 300)
             }
-            FirewallSeparator()
-            VStack(alignment: .leading, spacing: 8) {
-                Label("Your data stays here", systemImage: "internaldrive").font(.system(size: 13, weight: .semibold, design: .monospaced))
-                Text("Rules are saved on this Mac. Recent connections stay in the filter’s memory. Nothing is uploaded. The firewall keeps running when you close this window.")
-                    .font(.system(size: 12, design: .monospaced)).lineSpacing(3).foregroundStyle(FirewallTheme.secondary)
-                Text("Hostnames appear when macOS supplies them. This version does not inspect DNS, TLS, or ECH.")
-                    .font(.system(size: 11, design: .monospaced)).foregroundStyle(FirewallTheme.secondary)
-            }
         }.padding(.horizontal, 28).padding(.bottom, 28).frame(maxWidth: 840, alignment: .leading).frame(maxWidth: .infinity, alignment: .leading) }
     }
 
-    private func setupStep(_ number: String, title: String, detail: String) -> some View {
-        HStack(alignment: .top, spacing: 18) {
-            Text("[\(number)]").font(.system(size: 12, weight: .medium, design: .monospaced)).foregroundStyle(FirewallTheme.accent).padding(.top, 2)
-            VStack(alignment: .leading, spacing: 5) {
-                Text(title).font(.system(size: 13, weight: .semibold, design: .monospaced))
-                Text(detail).font(.system(size: 12, design: .monospaced)).lineSpacing(3).foregroundStyle(FirewallTheme.secondary)
-            }
-        }
-    }
 }
 
 private struct SidebarButtonStyle: ButtonStyle {
@@ -470,8 +403,6 @@ private struct ActivityBars: View {
         let peak = max(1, counts.max() ?? 1)
         VStack(alignment: .leading, spacing: 8) {
             HStack {
-                Text("LAST MINUTE").font(.system(size: 9, weight: .medium, design: .monospaced)).tracking(0.7)
-                Spacer()
                 Text("60s").font(.system(size: 9, design: .monospaced))
             }.foregroundStyle(FirewallTheme.secondary)
             HStack(alignment: .bottom, spacing: 3) {

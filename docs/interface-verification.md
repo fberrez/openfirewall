@@ -1,6 +1,15 @@
 # Terminal interface verification
 
-Verified on 2026-10-28, macOS 26.2, Apple Silicon. This is a presentation update, build 5. The public alpha.1 release remains build 4.
+Verified on 2026-10-28, macOS 26.2, Apple Silicon. Initial terminal interface checks used build 5. Alpha.2 uses build 7, with redundant copy removed. Alpha.1 was build 4.
+
+## Build 7 simplification
+
+- Removed page subtitles, sidebar tagline, module eyebrow, privacy slogans, repeated empty-state explanations, setup tutorial, and appearance subtitle.
+- Kept filter state, rule acknowledgements, errors, identity paths, default-vs-app-rule labels, and the flow-tracking warning.
+- Inspected Connections, Applications, Rules, Setup, and the app picker in the native unsigned preview.
+- Command-1 through Command-4 and Command-N worked. Search with no matches showed `NO MATCHES`; Reset filters restored all 18 sample connections.
+- Updated the README screenshot from the native preview. It contains sample data only.
+- All 10 core tests and the identity smoke test passed.
 
 ## Checks performed
 
