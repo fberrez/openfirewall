@@ -9,14 +9,14 @@
 
 <p align="center">
   <a href="https://github.com/fberrez/openfirewall/actions/workflows/build.yml"><img src="https://github.com/fberrez/openfirewall/actions/workflows/build.yml/badge.svg" alt="Build"></a>
-  <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-00bfcf" alt="MIT license"></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-6aef48" alt="MIT license"></a>
   <img src="https://img.shields.io/badge/macOS-14%2B-333333" alt="macOS 14 or later">
   <img src="https://img.shields.io/badge/status-early%20development-orange" alt="Early development">
 </p>
 
-![OpenFirewall connection monitor in preview mode](docs/images/connections-preview.png)
+![OpenFirewall connection monitor in preview mode](docs/images/connections-terminal-preview.jpg)
 
-*Interface preview with sample connections. It does not display anyone's network history.*
+*Terminal interface from the current source, with sample connections. The alpha.1 download below has the earlier interface.*
 
 ## What it does
 
@@ -119,7 +119,9 @@ After [installing OpenFirewall](#install):
 
 Apps are **allowed by default**. An explicit app rule overrides the default. Change the default or remove a rule in **Rules**. Removing a rule restores the default for that app.
 
-**+ Add app** also appears on **Rules**. It does not appear on **Connections**.
+**+ Add app** is available on **Connections**, **Applications**, and **Rules** in the current source. In the alpha.1 download, use **Applications** or **Rules**.
+
+The current interface defaults to a green terminal theme. Choose **Terminal**, **Daylight**, or **System** in **Setup → Appearance**. Use **⌘1–⌘4** to switch pages, **⌘N** to add an app, and **⌘E** to export connections.
 
 Closing or quitting the interface leaves an enabled filter running. To stop filtering, choose **Setup → Disable firewall**. Already blocked connections need to reconnect after changing their rule to Allow.
 

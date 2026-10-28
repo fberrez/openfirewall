@@ -17,6 +17,7 @@
 		83CF8BEE790C8E0A905F24CA /* SystemSetup.swift in Sources */ = {isa = PBXBuildFile; fileRef = DADEF22D3B5B5D9B34DA968D /* SystemSetup.swift */; };
 		88F8FBAFB3AF2F38FF895136 /* IdentityResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = C943F55B94C81A04B5A0BA1A /* IdentityResolver.swift */; };
 		90576159F25EFD54BCE97848 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 643A96DFF0D5F9AE20F3E1C4 /* Security.framework */; };
+		927591FE73C698689472E874 /* FirewallTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F8F73EB85FC91A70D1E6FF2 /* FirewallTheme.swift */; };
 		92DE2F67AFCEE2747E808017 /* OpenFirewallApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18B3E4B9FD2B696856716FEE /* OpenFirewallApp.swift */; };
 		9B19983B8BF613EA64149AB3 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9210A7C8547BFF8E10E711D1 /* main.swift */; };
 		BB394C7B82E169D568833492 /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = 395BBE109B153FDF6664D6E6 /* Models.swift */; };
@@ -41,6 +42,7 @@
 /* Begin PBXFileReference section */
 		0ED7083C6627F965C4E79F54 /* OpenFirewallFilter.systemextension */ = {isa = PBXFileReference; explicitFileType = "wrapper.system-extension"; includeInIndex = 0; path = OpenFirewallFilter.systemextension; sourceTree = BUILT_PRODUCTS_DIR; };
 		18B3E4B9FD2B696856716FEE /* OpenFirewallApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenFirewallApp.swift; sourceTree = "<group>"; };
+		1F8F73EB85FC91A70D1E6FF2 /* FirewallTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirewallTheme.swift; sourceTree = "<group>"; };
 		3955E4E08F7F380908AB9AC2 /* OpenFirewall.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OpenFirewall.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		395BBE109B153FDF6664D6E6 /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
 		61B9F26FD3E325A10E5E3625 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -124,6 +126,7 @@
 				61B9F26FD3E325A10E5E3625 /* Assets.xcassets */,
 				B9D9F7B51FC0DE5241D420FC /* FilterClient.swift */,
 				A39CD35F8EAEB90DADCD455D /* FirewallModel.swift */,
+				1F8F73EB85FC91A70D1E6FF2 /* FirewallTheme.swift */,
 				8780472AD022A222004D371A /* InstalledApplicationPicker.swift */,
 				18B3E4B9FD2B696856716FEE /* OpenFirewallApp.swift */,
 				DADEF22D3B5B5D9B34DA968D /* SystemSetup.swift */,
@@ -288,6 +291,7 @@
 				18649C0FC97B9D5A07B112E2 /* ControlProtocol.swift in Sources */,
 				114D7D7F01D07AA2AFB8BEDA /* FilterClient.swift in Sources */,
 				DA7316C32225F02B8C725321 /* FirewallModel.swift in Sources */,
+				927591FE73C698689472E874 /* FirewallTheme.swift in Sources */,
 				88F8FBAFB3AF2F38FF895136 /* IdentityResolver.swift in Sources */,
 				7388726062929A4D1DF5CCB5 /* InstalledApplicationPicker.swift in Sources */,
 				5B16C6247A897321CCFD1312 /* Models.swift in Sources */,
@@ -410,7 +414,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 4;
+				CURRENT_PROJECT_VERSION = 5;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = "";
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -483,7 +487,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 4;
+				CURRENT_PROJECT_VERSION = 5;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = "";
 				ENABLE_HARDENED_RUNTIME = YES;

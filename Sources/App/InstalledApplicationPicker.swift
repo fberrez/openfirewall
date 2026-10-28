@@ -14,9 +14,12 @@ struct InstalledApplicationPicker: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
-            Text("Add an application").font(.title2.weight(.semibold))
-            Text("Choose the app whose connections you want to manage.").foregroundStyle(.secondary)
-            TextField("Search installed apps", text: $search).textFieldStyle(.roundedBorder)
+            HStack(spacing: 12) {
+                PixelShield(size: 30)
+                Text("> ADD APP").font(.system(size: 24, weight: .semibold, design: .monospaced)).tracking(-0.5)
+            }
+            Text("Choose an app to manage its internet access.").font(.system(size: 12, design: .monospaced)).foregroundStyle(FirewallTheme.secondary)
+            FirewallSearchField(prompt: "Search installed apps", text: $search)
             if loading {
                 ProgressView().frame(maxWidth: .infinity, maxHeight: .infinity)
             } else {
@@ -28,13 +31,13 @@ struct InstalledApplicationPicker: View {
                                     Image(nsImage: NSWorkspace.shared.icon(forFile: app.url.path))
                                         .resizable().frame(width: 30, height: 30)
                                     VStack(alignment: .leading, spacing: 3) {
-                                        Text(app.name).font(.headline)
-                                        Text(app.url.path).font(.caption).foregroundStyle(.secondary).lineLimit(1)
+                                        Text(app.name).font(.system(size: 13, weight: .medium, design: .monospaced))
+                                        Text(app.url.path).font(.system(size: 11, design: .monospaced)).foregroundStyle(FirewallTheme.secondary).lineLimit(1)
                                     }
                                     Spacer()
-                                    Image(systemName: "plus.circle").foregroundStyle(.teal)
+                                    Image(systemName: "plus.circle").foregroundStyle(FirewallTheme.accent)
                                 }.padding(10).contentShape(Rectangle())
-                            }.buttonStyle(.plain)
+                            }.buttonStyle(TerminalRowButtonStyle())
                         }
                         if matching.isEmpty {
                             ContentUnavailableView.search(text: search)
@@ -42,13 +45,15 @@ struct InstalledApplicationPicker: View {
                     }
                 }.frame(maxWidth: .infinity, maxHeight: .infinity)
             }
-            Divider()
+            FirewallSeparator()
             HStack {
-                Button("Choose another file…", action: onBrowse)
+                Button("BROWSE…", action: onBrowse)
                 Spacer()
-                Button("Cancel") { dismiss() }.keyboardShortcut(.cancelAction)
+                Button("CANCEL") { dismiss() }.keyboardShortcut(.cancelAction)
             }
         }.padding(24).frame(width: 600, height: 520)
+            .foregroundStyle(FirewallTheme.ink).background(FirewallTheme.surface).tint(FirewallTheme.accent)
+            .buttonStyle(TerminalButtonStyle())
             .task {
                 apps = await Task.detached(priority: .userInitiated) { InstalledApplication.scan() }.value
                 loading = false
