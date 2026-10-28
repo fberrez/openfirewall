@@ -36,6 +36,47 @@ There is **no ready-to-install, notarized public download yet**. Building the in
 
 macOS 14 is the deployment target. Live verification used macOS 26.2. Compatibility across other Macs and network configurations is still being checked. [Verification details and release checklist](VERIFY.md).
 
+## Roadmap
+
+The priority is a reliable public alpha. Later features depend on testing and feedback. There are no committed release dates.
+
+### Implemented foundation
+
+- [x] Per-app Allow and Block rules with a configurable default.
+- [x] Local connection monitor, search, decision filters, and JSON export.
+- [x] Drop tracked open connections when an app changes to Block.
+- [x] Keep an enabled filter running after quitting the interface.
+- [x] Core tests, identity checks, and automated unsigned builds.
+
+Live enforcement has been verified on one Mac. These checks do not establish compatibility across all supported systems.
+
+### Next: public alpha
+
+- [ ] Provide a Developer ID-signed, notarized download.
+- [ ] Improve setup guidance and recovery when macOS approval is pending or denied.
+- [ ] Validate app upgrades, extension replacement, disabling, and removal.
+- [ ] Verify saved rules after reboot and recovery after provider crashes.
+- [ ] Measure CPU use, memory, and connection latency under load.
+
+### Then: broader compatibility
+
+- [ ] Test more macOS versions and hardware configurations.
+- [ ] Verify IPv4, IPv6, UDP, and incoming flows across local, remote, and VPN routes.
+- [ ] Test helper attribution, multiple users, and coexistence with other network filters.
+- [ ] Exercise the existing-flow tracking limit and improve its handling.
+
+The detailed acceptance checks are in [VERIFY.md](VERIFY.md).
+
+### Later candidates
+
+- [ ] Optional prompts for apps without a rule, with clear timeout behavior.
+- [ ] Temporary rules and rule import/export.
+- [ ] Destination, port, and protocol rules with documented precedence.
+- [ ] Optional local history with retention controls and per-app traffic summaries.
+- [ ] Research better hostname attribution while preserving encrypted connections.
+
+These are proposed directions, not available features. [Suggest a priority or use case](https://github.com/fberrez/openfirewall/issues/new?template=feature_request.yml).
+
 ## Build from source
 
 Requirements: macOS 14+, Xcode with Swift 6+, and [XcodeGen](https://github.com/yonaskolb/XcodeGen).
@@ -90,8 +131,6 @@ Bug reports, focused pull requests, and signed-device testing are welcome.
 - [Suggest a feature](https://github.com/fberrez/openfirewall/issues/new?template=feature_request.yml)
 - [Contributing guide](CONTRIBUTING.md)
 - [Report a security issue privately](SECURITY.md)
-
-Near-term work includes broader device testing, reliable upgrade and removal flows, and a signed, notarized public release. These are planned areas, not available features.
 
 ## License
 
