@@ -10,6 +10,7 @@ All 20 core tests passed, including 10 traffic-accounting tests. They cover stat
 
 - Apps mode initially displayed Notes (1 MB), Safari (918 KB), Terminal (0 bytes), sorted by numeric RX descending.
 - Expanding Notes displayed its six retained connections, also sorted by RX descending.
+- Selecting a row and pressing Right expanded its group; Left collapsed it. Native table selection remains available.
 - Clicking RX reversed the order, then restored descending order.
 - Searching for `wikipedia` retained four matching connections while app totals stayed 1 MB, 918 KB, and zero. Block showed only Terminal.
 - Connections mode displayed individual records sorted by RX, including a closed sample flow.

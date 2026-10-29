@@ -52,6 +52,7 @@ struct FirewallWindow: View {
     @State private var decisionFilter = "All"
     @AppStorage("connectionGrouping") private var grouping = "Apps"
     @State private var sortOrder = [KeyPathComparator(\ConnectionLogRow.rxSortValue, order: .reverse)]
+    @State private var selectedLogRows = Set<ConnectionLogRow.ID>()
     private var filtered: [ConnectionRecord] {
         model.connections.filter {
             (decisionFilter == "All" || $0.action.title == decisionFilter) &&
@@ -238,7 +239,7 @@ struct FirewallWindow: View {
     }
 
     private var connectionTable: some View {
-        Table(logRows, children: \.children, sortOrder: $sortOrder) {
+        Table(logRows, children: \.children, selection: $selectedLogRows, sortOrder: $sortOrder) {
             TableColumn("APPLICATION", value: \.name) { row in
                 HStack(spacing: 10) {
                     if grouping == "Apps", let record = row.connection {
