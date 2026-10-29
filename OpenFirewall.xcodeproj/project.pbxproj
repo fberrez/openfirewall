@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		01B73306494C24D2AEB7A751 /* ApplicationTraffic.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD79349ECD3B71B8568413B9 /* ApplicationTraffic.swift */; };
 		062B5D337E317C520B79F757 /* ControlProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A13D0482737454F667A89A6 /* ControlProtocol.swift */; };
 		114D7D7F01D07AA2AFB8BEDA /* FilterClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9D9F7B51FC0DE5241D420FC /* FilterClient.swift */; };
 		18649C0FC97B9D5A07B112E2 /* ControlProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A13D0482737454F667A89A6 /* ControlProtocol.swift */; };
@@ -22,6 +23,7 @@
 		9B19983B8BF613EA64149AB3 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9210A7C8547BFF8E10E711D1 /* main.swift */; };
 		BB394C7B82E169D568833492 /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = 395BBE109B153FDF6664D6E6 /* Models.swift */; };
 		C2A6D46C594495FE989BB987 /* NetworkExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EE22F30761945AAD5DF2268F /* NetworkExtension.framework */; };
+		CD8067357C7DDD225018508B /* ApplicationTraffic.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD79349ECD3B71B8568413B9 /* ApplicationTraffic.swift */; };
 		D188E86E1EE71CA6FBFF24D9 /* SystemExtensions.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C6AFC7D0B5C5C5541DD3EE1A /* SystemExtensions.framework */; };
 		DA7316C32225F02B8C725321 /* FirewallModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A39CD35F8EAEB90DADCD455D /* FirewallModel.swift */; };
 		EC141BF2FAF9034CAE37AE9D /* IdentityResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = C943F55B94C81A04B5A0BA1A /* IdentityResolver.swift */; };
@@ -56,6 +58,7 @@
 		C943F55B94C81A04B5A0BA1A /* IdentityResolver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IdentityResolver.swift; sourceTree = "<group>"; };
 		DA7D67B03A43D3B62887225C /* FilterDataProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterDataProvider.swift; sourceTree = "<group>"; };
 		DADEF22D3B5B5D9B34DA968D /* SystemSetup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SystemSetup.swift; sourceTree = "<group>"; };
+		DD79349ECD3B71B8568413B9 /* ApplicationTraffic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplicationTraffic.swift; sourceTree = "<group>"; };
 		EE22F30761945AAD5DF2268F /* NetworkExtension.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NetworkExtension.framework; path = System/Library/Frameworks/NetworkExtension.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
@@ -85,6 +88,7 @@
 		0A17FEC5C45141362970B8AD /* Core */ = {
 			isa = PBXGroup;
 			children = (
+				DD79349ECD3B71B8568413B9 /* ApplicationTraffic.swift */,
 				395BBE109B153FDF6664D6E6 /* Models.swift */,
 			);
 			name = Core;
@@ -276,6 +280,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				01B73306494C24D2AEB7A751 /* ApplicationTraffic.swift in Sources */,
 				062B5D337E317C520B79F757 /* ControlProtocol.swift in Sources */,
 				F1A08920FF827FB2E183F5EA /* FilterDataProvider.swift in Sources */,
 				EC141BF2FAF9034CAE37AE9D /* IdentityResolver.swift in Sources */,
@@ -288,6 +293,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CD8067357C7DDD225018508B /* ApplicationTraffic.swift in Sources */,
 				18649C0FC97B9D5A07B112E2 /* ControlProtocol.swift in Sources */,
 				114D7D7F01D07AA2AFB8BEDA /* FilterClient.swift in Sources */,
 				DA7316C32225F02B8C725321 /* FirewallModel.swift in Sources */,
@@ -414,7 +420,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 8;
+				CURRENT_PROJECT_VERSION = 9;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = "";
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -488,7 +494,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 8;
+				CURRENT_PROJECT_VERSION = 9;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = "";
 				ENABLE_HARDENED_RUNTIME = YES;

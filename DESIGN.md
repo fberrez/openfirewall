@@ -26,6 +26,7 @@ A 224-point sidebar with module links and explicit filter status. The content ar
 - Search fields with a prompt glyph, clear action, and full border.
 - Decision filters, app rules, and appearance choices share one button-group component. Selected choices carry an accessible selected state.
 - The native macOS table preserves selection, scrolling, and accessibility. Alternate row fills are disabled.
+- Connections offers Apps and Connections modes. App rows expand into retained connections. RX sorts numerically, highest first, and app totals cover the current OpenFirewall UI session independently of visible log rows.
 - Decisions show ALLOW with a check and BLOCK with a cross. Color is supplementary.
 - Add app is available on Connections, Applications, and Rules.
 - Setup and empty states give accurate actions, not simulated terminal output.
@@ -36,4 +37,4 @@ No fake boot sequence, blinking cursor, animated scanlines, CRT distortion, or d
 
 ## Scope
 
-Presentation only. Keep the filter, signing identity, persistence, and enforcement unchanged. Keep the installed firewall running while testing the separate UI preview.
+Keep signing identity, policy persistence, and enforcement unchanged. Traffic accounting uses metadata reports and does not inspect payloads. Test the separate unsigned UI preview; do not replace or activate the installed filter on the working Mac.

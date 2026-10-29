@@ -8,6 +8,7 @@ final class FilterDataProvider: NEFilterDataProvider {
     private let stateQueue = DispatchQueue(label: "org.openfirewall.filter.state")
     private var engine = try! RuleEngine()
     private var history = ConnectionHistory()
+    private var traffic = ApplicationTrafficLedger()
     private var flows: [UUID: (flow: NEFilterSocketFlow, identity: ApplicationIdentity)] = [:]
     private let identityCache = NSCache<NSData, IdentityBox>()
     private var untracked: UInt64 = 0
@@ -18,6 +19,7 @@ final class FilterDataProvider: NEFilterDataProvider {
 
     override func startFilter(completionHandler: @escaping (Error?) -> Void) {
         identityCache.countLimit = 2048
+        stateQueue.sync { traffic = ApplicationTrafficLedger(); startedAt = Date() }
         do {
             if let data = filterConfiguration.vendorConfiguration?[ProductConfiguration.policyKey] as? Data {
                 let policy = try WireCodec.decode(FirewallPolicy.self, from: data)
@@ -71,6 +73,7 @@ final class FilterDataProvider: NEFilterDataProvider {
                 host: socket?.remoteHostname ?? endpoint?.hostname ?? "Unknown destination",
                 port: endpoint?.port ?? "", transport: transport, direction: direction, action: action)
             history.insert(record)
+            traffic.register(record)
             if let socket, action == .allow {
                 if flows.count < 16_384 { flows[flow.identifier] = (socket, identity) }
                 else { untracked += 1 }
@@ -86,6 +89,8 @@ final class FilterDataProvider: NEFilterDataProvider {
         stateQueue.sync {
             guard let flow = report.flow else { return }
             let closed = report.event == .flowClosed
+            traffic.report(id: flow.identifier, bytesIn: UInt64(report.bytesInboundCount),
+                           bytesOut: UInt64(report.bytesOutboundCount), closed: closed)
             history.report(id: flow.identifier, bytesIn: UInt64(report.bytesInboundCount),
                            bytesOut: UInt64(report.bytesOutboundCount), closed: closed)
             if closed { flows.removeValue(forKey: flow.identifier) }
@@ -96,7 +101,8 @@ final class FilterDataProvider: NEFilterDataProvider {
         try stateQueue.sync {
             try WireCodec.encode(ProviderSnapshot(policy: engine.policy, connections: history.newestFirst,
                 startedAt: startedAt, activeFlowCount: flows.count, untrackedFlowCount: untracked,
-                evictedHistoryCount: history.evictedCount))
+                evictedHistoryCount: history.evictedCount, trafficEpoch: traffic.epoch,
+                applicationTraffic: traffic.totals, untrackedTrafficFlowCount: traffic.untrackedFlowCount))
         }
     }
 

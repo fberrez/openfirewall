@@ -149,11 +149,18 @@ public struct ProviderSnapshot: Codable, Sendable {
     public var activeFlowCount: Int
     public var untrackedFlowCount: UInt64
     public var evictedHistoryCount: UInt64
+    public var trafficEpoch: UUID?
+    public var applicationTraffic: [ApplicationTrafficTotal]?
+    public var untrackedTrafficFlowCount: UInt64?
     public init(policy: FirewallPolicy, connections: [ConnectionRecord], startedAt: Date,
-                activeFlowCount: Int, untrackedFlowCount: UInt64 = 0, evictedHistoryCount: UInt64 = 0) {
+                activeFlowCount: Int, untrackedFlowCount: UInt64 = 0, evictedHistoryCount: UInt64 = 0,
+                trafficEpoch: UUID? = nil, applicationTraffic: [ApplicationTrafficTotal]? = nil,
+                untrackedTrafficFlowCount: UInt64? = nil) {
         self.policy = policy; self.connections = connections; self.startedAt = startedAt
         self.activeFlowCount = activeFlowCount; self.untrackedFlowCount = untrackedFlowCount
         self.evictedHistoryCount = evictedHistoryCount
+        self.trafficEpoch = trafficEpoch; self.applicationTraffic = applicationTraffic
+        self.untrackedTrafficFlowCount = untrackedTrafficFlowCount
     }
 }
 

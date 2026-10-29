@@ -50,11 +50,23 @@ struct FirewallWindow: View {
     @State private var page: FirewallPage = .connections
     @State private var search = ""
     @State private var decisionFilter = "All"
+    @AppStorage("connectionGrouping") private var grouping = "Apps"
+    @State private var sortOrder = [KeyPathComparator(\ConnectionLogRow.rxSortValue, order: .reverse)]
     private var filtered: [ConnectionRecord] {
         model.connections.filter {
             (decisionFilter == "All" || $0.action.title == decisionFilter) &&
             (search.isEmpty || [$0.application.name, $0.host, $0.application.path, $0.port].joined(separator: " ").localizedCaseInsensitiveContains(search))
         }
+    }
+    private var logRows: [ConnectionLogRow] {
+        if grouping == "Connections" { return filtered.map(ConnectionLogRow.init(connection:)).sorted(using: sortOrder) }
+        let groups = ConnectionLogRow.groups(connections: model.connections,
+            totals: model.hasTrafficTotals ? model.applicationTraffic : [], search: search,
+            decision: decisionFilter == "Allow" ? .allow : decisionFilter == "Block" ? .deny : nil)
+        return groups.map { row in
+            ConnectionLogRow(application: row.application, bytesIn: row.sessionBytesIn,
+                connections: (row.children ?? []).sorted(using: sortOrder).compactMap(\.connection))
+        }.sorted(using: sortOrder)
     }
 
     var body: some View {
@@ -163,7 +175,7 @@ struct FirewallWindow: View {
     }
 
     @ViewBuilder private var connectionContent: some View {
-        if model.connections.isEmpty && !model.connected && !model.preview {
+        if model.connections.isEmpty && model.applicationTraffic.isEmpty && !model.connected && !model.preview {
             VStack(spacing: 17) {
                 PixelShield(size: 78).padding(.bottom, 12)
                 Text(setup.enabled ? "FILTER UNREACHABLE" : "FILTER OFFLINE").font(.system(size: 24, weight: .semibold, design: .monospaced)).tracking(1)
@@ -174,6 +186,16 @@ struct FirewallWindow: View {
             }.frame(maxWidth: .infinity, maxHeight: .infinity).padding(40)
         } else {
             connectionSummary
+            HStack {
+                TerminalSegments(title: "Group connections", values: ["Apps", "Connections"], selection: $grouping, label: { $0 })
+                    .frame(width: 245)
+                Spacer()
+                if !model.hasTrafficTotals || model.trafficIncomplete {
+                    Label(model.hasTrafficTotals ? "RX PARTIAL" : "RX UNAVAILABLE", systemImage: "exclamationmark.triangle")
+                        .foregroundStyle(FirewallTheme.warning)
+                        .help(model.hasTrafficTotals ? "The traffic accounting limit was reached. Some bytes are missing." : "This filter does not supply cumulative application counters.")
+                }
+            }.font(.system(size: 10, design: .monospaced)).padding(.horizontal, 28).padding(.top, 14)
             HStack(spacing: 14) {
                 FirewallSearchField(prompt: "Search apps or destinations", text: $search).frame(maxWidth: 350)
                 Spacer(minLength: 8)
@@ -184,7 +206,7 @@ struct FirewallWindow: View {
             }.padding(.horizontal, 28).padding(.vertical, 18)
             connectionTable
             HStack {
-                Text("\(filtered.count) of \(model.connections.count) connections")
+                Text(grouping == "Apps" ? "\(logRows.count) \(logRows.count == 1 ? "app" : "apps") · \(filtered.count) connections" : "\(filtered.count) of \(model.connections.count) connections")
                 Spacer()
                 if model.evicted > 0 { Text("\(model.evicted) evicted") }
             }.font(.system(size: 10, design: .monospaced)).foregroundStyle(FirewallTheme.secondary).padding(.horizontal, 28).padding(.vertical, 12)
@@ -216,35 +238,60 @@ struct FirewallWindow: View {
     }
 
     private var connectionTable: some View {
-        Table(filtered) {
-            TableColumn("APPLICATION") { record in
+        Table(logRows, children: \.children, sortOrder: $sortOrder) {
+            TableColumn("APPLICATION", value: \.name) { row in
                 HStack(spacing: 10) {
-                    AppIcon(path: record.application.path, size: 26)
-                    Text(record.application.name).font(.system(size: 12, weight: .medium, design: .monospaced)).lineLimit(1)
+                    if grouping == "Apps", let record = row.connection {
+                        Text("\(record.transport) · \(record.port.isEmpty ? "—" : record.port)")
+                            .font(.system(size: 11, design: .monospaced)).foregroundStyle(FirewallTheme.secondary)
+                    } else {
+                        AppIcon(path: row.application.path, size: 26)
+                        Text(row.application.name).font(.system(size: 12, weight: .medium, design: .monospaced)).lineLimit(1)
+                    }
                 }.padding(.vertical, 8)
-            }.width(min: 135, ideal: 180)
-            TableColumn("DESTINATION") { record in
-                VStack(alignment: .leading, spacing: 4) {
-                    Text(record.host).font(.system(size: 12, design: .monospaced)).lineLimit(1)
-                    Text("\(record.transport) · \(record.port.isEmpty ? "—" : record.port) · \(record.direction)")
-                        .font(.system(size: 10, design: .monospaced)).foregroundStyle(FirewallTheme.secondary)
+            }.width(min: 155, ideal: 200)
+            TableColumn("DESTINATION") { row in
+                if let record = row.connection {
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text(record.host).font(.system(size: 12, design: .monospaced)).lineLimit(1)
+                        Text(grouping == "Apps" ? record.direction : "\(record.transport) · \(record.port.isEmpty ? "—" : record.port) · \(record.direction)")
+                            .font(.system(size: 10, design: .monospaced)).foregroundStyle(FirewallTheme.secondary)
+                    }
+                } else {
+                    Text("\(row.children?.count ?? 0) \(row.children?.count == 1 ? "connection" : "connections")").foregroundStyle(FirewallTheme.secondary)
                 }
             }.width(min: 140, ideal: 240)
-            TableColumn("DECISION") { record in DecisionBadge(action: record.action) }.width(90)
-            TableColumn("RX") { record in Text(bytes(record.bytesIn)).font(.system(size: 11, design: .monospaced)).monospacedDigit().foregroundStyle(FirewallTheme.secondary) }.width(65)
-            TableColumn("STATE") { record in Text(record.state.rawValue.uppercased()).font(.system(size: 10, design: .monospaced)).foregroundStyle(FirewallTheme.secondary) }.width(58)
-            TableColumn("") { record in
+            TableColumn("DECISION") { row in
+                if let record = row.connection { DecisionBadge(action: record.action) }
+                else if let action = model.explicitAction(row.application.id) {
+                    DecisionBadge(action: action)
+                } else { Text("DEFAULT").foregroundStyle(FirewallTheme.secondary).font(.system(size: 10, design: .monospaced)) }
+            }.width(90)
+            TableColumn("RX", value: \.rxSortValue) { row in
+                Text(row.bytesIn.map(bytes) ?? "—").font(.system(size: 11, design: .monospaced)).monospacedDigit()
+                    .foregroundStyle(row.connection == nil ? FirewallTheme.ink : FirewallTheme.secondary)
+                    .help(row.connection == nil ? "Received since OpenFirewall launched. Includes connections outside the current search and decision filters." : "Received over this connection’s lifetime.")
+            }.width(85)
+            TableColumn("STATE") { row in
+                if let record = row.connection {
+                    Text(record.state.rawValue.uppercased()).font(.system(size: 10, design: .monospaced)).foregroundStyle(FirewallTheme.secondary)
+                } else {
+                    Text("\((row.children ?? []).filter { $0.connection?.state == .active }.count) active")
+                        .font(.system(size: 10, design: .monospaced)).foregroundStyle(FirewallTheme.secondary)
+                }
+            }.width(65)
+            TableColumn("") { row in
                 Menu {
-                    Button("Allow this app") { model.setRule(.allow, application: record.application) }
-                    Button("Block this app") { model.setRule(.deny, application: record.application) }
+                    Button("Allow this app") { model.setRule(.allow, application: row.application) }
+                    Button("Block this app") { model.setRule(.deny, application: row.application) }
                 } label: { Text("⋯").font(.system(size: 15, design: .monospaced)) }.menuStyle(.borderlessButton).menuIndicator(.hidden)
-                    .accessibilityLabel("Rule for \(record.application.name)")
-                    .disabled(!record.application.canCreateRule).frame(width: 22)
+                    .accessibilityLabel("Rule for \(row.application.name)")
+                    .disabled(!row.application.canCreateRule).frame(width: 22)
             }.width(28)
         }.alternatingRowBackgrounds(.disabled).tableStyle(.inset).font(.system(size: 10, design: .monospaced))
             .scrollContentBackground(.hidden).background(FirewallTheme.surface)
             .overlay {
-                if filtered.isEmpty {
+                if logRows.isEmpty {
                     VStack(spacing: 12) {
                         Text(model.connections.isEmpty ? "NO CONNECTIONS" : "NO MATCHES")
                             .font(.system(size: 14, weight: .semibold, design: .monospaced))

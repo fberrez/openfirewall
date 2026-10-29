@@ -13,7 +13,7 @@
   <img src="https://img.shields.io/badge/status-early%20development-orange" alt="Early development">
 </p>
 
-![OpenFirewall connection monitor in preview mode](docs/images/connections-terminal-preview.jpg)
+![OpenFirewall application groups in preview mode](docs/images/connections-grouped-preview.jpg)
 
 *Current-source interface with sample connections. Public alpha.1 has the earlier interface.*
 
@@ -122,6 +122,10 @@ Apps are **allowed by default**. An explicit app rule overrides the default. Cha
 
 The current interface defaults to a green terminal theme. Choose **Terminal**, **Daylight**, or **System** in **Setup → Appearance**. Use **⌘1–⌘4** to switch pages, **⌘N** to add an app, and **⌘E** to export connections.
 
+In the current source (build 9), **Connections → Apps** groups the log by verified application identity. Expand an app for its retained connections. **Connections** switches back to individual rows. Both views start with highest RX first; click **RX** to reverse the sort or **Application** to sort by name.
+
+App RX accumulates for the current OpenFirewall UI session. Quitting and relaunching OpenFirewall resets the baseline. Closing its window, closing connections, searching, filtering decisions, or clearing history does not reset app RX. The first successful provider snapshot establishes the baseline; totals then include bytes from connections that have left the 500-row log. App RX is the full session total even when only some connections match a search. Individual connection RX covers that connection's lifetime. JSON export remains the retained connection log.
+
 Closing or quitting the interface leaves an enabled filter running. To stop filtering, choose **Setup → Disable firewall**. Already blocked connections need to reconnect after changing their rule to Allow.
 
 ## Privacy and limits
@@ -130,8 +134,9 @@ OpenFirewall records connection metadata. It does not inspect payloads, decrypt 
 
 **Local-proxy fix in the unreleased source:** app rules also cover IPv4 loopback (`127.0.0.0/8`) and IPv6 loopback (`::1`), including local HTTP and SOCKS proxies. Alpha.1 does not contain this fix. Reconnect apps after updating the extension so existing untracked local connections are replaced.
 
-- History stays in extension memory and resets when the extension stops. Only the latest 500 records are retained.
+- History stays in extension memory until cleared or the provider process exits. Only the latest 500 records are retained.
 - Byte counts use macOS reports, requested about every five seconds. Short or blocked flows may show zero bytes.
+- Cumulative app RX needs the build 9 provider. Older snapshots display unavailable totals. Accounting retains up to 16,384 open-flow counters and 4,096 app identities; `RX PARTIAL` indicates missing accounting after either limit. Counts already received remain visible across provider restarts, but bytes not reported before a stop cannot be recovered.
 - Rules persist in macOS filter preferences and in `~/Library/Application Support/OpenFirewall/rules.json`.
 - Rules use verified code-signing identity, not an app's name or file path. Helpers can have separate identities. Some binaries receive a **Pinned build** rule that must be recreated after an update.
 - The filter decides socket flows delivered by macOS. Coverage of every VPN, IPv6, incoming, or system-service path has not been established.
