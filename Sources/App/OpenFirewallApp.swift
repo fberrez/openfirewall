@@ -249,7 +249,7 @@ struct FirewallWindow: View {
                         Text(row.application.name).font(.system(size: 12, weight: .medium, design: .monospaced)).lineLimit(1)
                     }
                 }.padding(.vertical, 8)
-            }.width(min: 155, ideal: 200)
+            }.width(min: 155, ideal: 180)
             TableColumn("DESTINATION") { row in
                 if let record = row.connection {
                     VStack(alignment: .leading, spacing: 4) {
@@ -260,7 +260,7 @@ struct FirewallWindow: View {
                 } else {
                     Text("\(row.children?.count ?? 0) \(row.children?.count == 1 ? "connection" : "connections")").foregroundStyle(FirewallTheme.secondary)
                 }
-            }.width(min: 140, ideal: 240)
+            }.width(min: 140, ideal: 200)
             TableColumn("DECISION") { row in
                 if let record = row.connection { DecisionBadge(action: record.action) }
                 else if let action = model.explicitAction(row.application.id) {

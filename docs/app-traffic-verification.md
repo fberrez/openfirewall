@@ -15,6 +15,7 @@ All 20 core tests passed, including 10 traffic-accounting tests. They cover stat
 - Connections mode displayed individual records sorted by RX, including a closed sample flow.
 - Clearing the preview log left the three application rows and their RX totals intact, with zero retained connections.
 - The grouped table, primary actions, search, and decision controls remained usable at about 1000 points wide.
+- Terminal and Daylight appearances were visually inspected. Terminal was restored after the check.
 - The README screenshot contains sample data only.
 
 The universal unsigned app and embedded extension built and passed bundle validation. Preview and core tests do not establish live accounting correctness or upgrade reliability. Build 9 needs isolated signed-device testing before distribution. The alpha.2 build 8 draft remains unchanged.
