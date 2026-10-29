@@ -13,6 +13,9 @@ final class FirewallModel: ObservableObject {
     @Published var activeFlows = 0
     @Published var untracked: UInt64 = 0
     @Published var evicted: UInt64 = 0
+    @Published var applicationTraffic: [ApplicationTrafficTotal] = []
+    @Published var hasTrafficTotals = false
+    @Published var trafficIncomplete = false
     @Published var showingApplicationPicker = false
     let setup = SystemSetup()
     private let client = FilterClient()
@@ -20,6 +23,8 @@ final class FirewallModel: ObservableObject {
     private var saving = false
     private var pollTask: Task<Void, Never>?
     private var savedBeforePreview: FirewallPolicy?
+    private var trafficSession = ApplicationTrafficSession()
+    private var savedTrafficBeforePreview: (totals: [ApplicationTrafficTotal], available: Bool, incomplete: Bool)?
     private var localURL: URL {
         FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)[0]
             .appendingPathComponent("OpenFirewall", isDirectory: true).appendingPathComponent("rules.json")
@@ -46,6 +51,13 @@ final class FirewallModel: ObservableObject {
             guard !preview else { return }
             connected = true; connections = snapshot.connections; activeFlows = snapshot.activeFlowCount
             untracked = snapshot.untrackedFlowCount; evicted = snapshot.evictedHistoryCount
+            if let epoch = snapshot.trafficEpoch, let totals = snapshot.applicationTraffic {
+                trafficSession.consume(epoch: epoch, totals: totals)
+                applicationTraffic = trafficSession.totals; hasTrafficTotals = true
+                trafficIncomplete = trafficIncomplete || (snapshot.untrackedTrafficFlowCount ?? 0) > 0
+            } else {
+                hasTrafficTotals = false
+            }
             status = "Filtering"
             if !saving && pendingPolicy == nil && snapshot.policy.revision > policy.revision { policy = snapshot.policy; saveLocal() }
         } catch {
@@ -160,10 +172,15 @@ final class FirewallModel: ObservableObject {
         if preview {
             preview = false; policy = savedBeforePreview ?? FirewallPolicy(); savedBeforePreview = nil
             connections = []; connected = false; updateMessage = nil; status = "Filter disconnected"
+            if let saved = savedTrafficBeforePreview {
+                applicationTraffic = saved.totals; hasTrafficTotals = saved.available; trafficIncomplete = saved.incomplete
+            }
+            savedTrafficBeforePreview = nil
             Task { await refresh() }; return
         }
         guard !connected && !saving && !setup.enabled else { return }
         savedBeforePreview = policy; preview = true; policy = FirewallPolicy()
+        savedTrafficBeforePreview = (applicationTraffic, hasTrafficTotals, trafficIncomplete)
         let apps = [
             ApplicationIdentity(id: "preview:safari", name: "Safari", path: "/Applications/Safari.app", signingIdentifier: "com.apple.Safari", teamIdentifier: "apple-platform", isVerifiedSigner: true),
             ApplicationIdentity(id: "preview:notes", name: "Notes", path: "/System/Applications/Notes.app", signingIdentifier: "com.apple.Notes", teamIdentifier: "apple-platform", isVerifiedSigner: true),
@@ -179,6 +196,17 @@ final class FirewallModel: ObservableObject {
             if record.action == .allow { record.bytesIn = UInt64((i + 1) * 18_432); record.bytesOut = UInt64((i + 1) * 1024) }
             return record
         }
-        activeFlows = 12; status = "Sample connections"; updateMessage = "Preview · changes not applied"
+        connections[0].state = .closed
+        var sampleTraffic = ApplicationTrafficSession()
+        let epoch = UUID()
+        sampleTraffic.consume(epoch: epoch, totals: [])
+        let totals = Dictionary(grouping: connections, by: { $0.application.id }).values.map { records in
+            ApplicationTrafficTotal(application: records[0].application,
+                bytesIn: records.reduce(0) { $0 + $1.bytesIn }, bytesOut: records.reduce(0) { $0 + $1.bytesOut })
+        }
+        sampleTraffic.consume(epoch: epoch, totals: totals)
+        applicationTraffic = sampleTraffic.totals; hasTrafficTotals = true; trafficIncomplete = false
+        activeFlows = connections.filter { $0.state == .active }.count
+        status = "Sample connections"; updateMessage = "Preview · changes not applied"
     }
 }

@@ -37,7 +37,11 @@ Quitting the app does not stop an enabled system extension. Use **Setup → Disa
 
 ## Connection monitor
 
-The provider requests macOS statistics reports about every five seconds. It retains the latest 500 metadata records in memory. The UI polls over XPC every two seconds. History resets when the provider stops.
+The provider requests macOS statistics reports about every five seconds. It retains the latest 500 metadata records in memory. The UI polls over XPC every two seconds. The retained log is cleared explicitly or when the provider process exits.
+
+Application traffic accounting is separate from the retained log. Each flow has a monotonic high-water mark; only increases are added to its verified application's RX/TX totals. Closed-flow counters are released after the final report, while app totals remain. Late reports for an evicted log row still contribute. Clearing the log does not clear traffic accounting. Its bounds are 16,384 tracked flows and 4,096 app identities; skipped registrations set the UI's partial-accounting state.
+
+Snapshots carry an optional accounting epoch and per-app totals. A new UI process treats its first snapshot as a baseline and accumulates subsequent deltas. A provider restart changes the epoch, retaining totals already observed by the UI and adding the new provider's reports. Unreported bytes at provider shutdown cannot be reconstructed. Preview uses separate sample totals. Older snapshots still decode; cumulative RX is unavailable rather than calculated from a shrinking retained log.
 
 Records include the attributed application, destination, port, protocol, direction, decision, state, and cumulative byte counts. Short or blocked flows can show zero bytes. Older records are evicted.
 
