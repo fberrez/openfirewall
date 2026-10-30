@@ -124,11 +124,9 @@ struct FirewallWindow: View {
             Spacer()
             VStack(alignment: .leading, spacing: 12) {
                 FirewallSeparator()
-                HStack(spacing: 8) {
-                    Rectangle().fill(statusColor).frame(width: 7, height: 7)
-                    Text(model.preview ? "[PREVIEW]" : model.connected ? "[FILTER ONLINE]" : setup.enabled ? "[FILTER UNREACHABLE]" : "[FILTER OFFLINE]")
-                        .font(.system(size: 12, weight: .semibold, design: .monospaced))
-                }.padding(.top, 6)
+                Text(model.preview ? "[PREVIEW]" : model.connected ? "[FILTER ONLINE]" : setup.enabled ? "[FILTER UNREACHABLE]" : "[FILTER OFFLINE]")
+                    .font(.system(size: 12, weight: .semibold, design: .monospaced))
+                    .padding(.top, 6)
                 Text("v\(Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "0.1.0")")
                     .font(.system(size: 10, design: .monospaced)).foregroundStyle(FirewallTheme.secondary)
             }.padding(22)
@@ -137,10 +135,9 @@ struct FirewallWindow: View {
 
     private var pageHeader: some View {
         HStack(alignment: .center, spacing: 18) {
-            HStack(spacing: 10) {
-                Text(">").foregroundStyle(FirewallTheme.accent).accessibilityHidden(true)
-                Text(page.rawValue.uppercased())
-            }.font(.system(size: 24, weight: .semibold, design: .monospaced)).tracking(0.6)
+            Text(page.rawValue.uppercased())
+                .font(.system(size: 24, weight: .semibold, design: .monospaced))
+                .tracking(0.6)
             Spacer(minLength: 12)
             if page == .connections {
                 Button { model.exportHistory() } label: { Label("EXPORT", systemImage: "square.and.arrow.up") }
@@ -154,8 +151,6 @@ struct FirewallWindow: View {
         }.padding(.horizontal, 28).padding(.top, 25).padding(.bottom, 28)
     }
 
-    private var statusColor: Color { model.preview ? FirewallTheme.accent : model.connected ? FirewallTheme.allow : FirewallTheme.secondary }
-
     private var previewBanner: some View {
         HStack {
             Label("PREVIEW · FILTER OFF", systemImage: "eye")
@@ -168,7 +163,6 @@ struct FirewallWindow: View {
         VStack(spacing: 0) {
             FirewallSeparator()
             HStack(spacing: 7) {
-                Rectangle().fill(statusColor).frame(width: 5, height: 5)
                 Text(model.updateMessage ?? model.status).lineLimit(1)
                 Spacer()
             }.font(.system(size: 10, design: .monospaced)).padding(.horizontal, 28).padding(.vertical, 12)
